@@ -1,8 +1,8 @@
-### Gestion Librairie
+### Library Management
 
-- Compte client/admin
-- Gestion des produits
-- Gestion des stocks
-- Gestion des commandes
-- Paiement
-- Facturation
+- Customer/admin account
+- Product management
+- Inventory management
+- Order management
+- Payment
+- Billing
