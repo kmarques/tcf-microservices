@@ -4,6 +4,7 @@ exports.createToken = (user) => {
   const payload = {
     userId: user.id,
     email: user.email,
+    role: user.role,
   };
   const options = {
     expiresIn: "1d",
