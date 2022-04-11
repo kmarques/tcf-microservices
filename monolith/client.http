@@ -1,0 +1,50 @@
+### Login
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "test"
+}
+
+### Register
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+    "lastname": "test",
+    "firstname": "test",
+  "email": "test@test.com",
+  "password": "test"
+}
+
+### GET all users
+GET http://localhost:3000/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY0OTY4NjMyNywiZXhwIjoxNjQ5NzcyNzI3fQ.SDRf1vdeXC-hzm-UQvw6G2Xut0GMA5Djabs4OFRz6Nw
+
+### Create a user with a POST request using lastname, firstname, email, password
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "lastname": "Doe",
+  "firstname": "John",
+  "email": "test@test.com",
+  "password": "test"
+}
+
+### GET a user
+GET http://localhost:3000/users/1
+
+
+### Update a user with a PUT request using lastname, firstname, email, password
+PUT http://localhost:3000/users/1
+Content-Type: application/json
+
+{
+  "lastname": "Doe",
+  "firstname": "Jane",
+}
+
+### Delete a user with a DELETE request
+DELETE http://localhost:3000/users/1
