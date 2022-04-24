@@ -5,6 +5,7 @@ console.log(process.env);
 app.use(express.json());
 
 app.use("/", require("./routes/security"));
+app.use('/payment', require('./routes/payment'));
 app.use("/users", require("./middlewares/security"), require("./routes/User"));
 
 app.listen(process.env.PORT || 3000, () => {
