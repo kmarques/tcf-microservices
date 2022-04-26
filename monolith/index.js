@@ -4,6 +4,7 @@ const app = express();
 const pdf = require("./lib/pdf");
 console.log(process.env);
 app.use(express.json());
+const BillController = require("./controllers/Bill");
 
 const middlewares = require("./middlewares");
 
@@ -32,6 +33,8 @@ app.get("/test/pdf", async (req, res) => {
   res.json("ok");
 });
 
+app.post("/test/bill", BillController.post);
+
 app.listen(process.env.PORT || 3000, () => {
-  console.log("Server is running on port " + process.env.PORT);
+	console.log("Server is running on port " + process.env.PORT);
 });
