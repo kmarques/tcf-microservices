@@ -1,7 +1,5 @@
 const { Model, DataTypes } = require("sequelize");
-const User = require("./User");
 const sequelize = require("../lib/db");
-const Order = require("./Order");
 
 class Bill extends Model {}
 

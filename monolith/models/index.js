@@ -13,8 +13,8 @@ Bill.belongsTo(User);
 Order.hasOne(Bill);
 Bill.belongsTo(Order);
 
-OrderProduct.hasMany(Order);
-Order.belongsTo(OrderProduct);
+Order.hasMany(OrderProduct);
+OrderProduct.belongsTo(Order);
 
 sequelize.sync({ alter: true }).then(() => {
 	console.log("Database & tables created!");
@@ -22,5 +22,7 @@ sequelize.sync({ alter: true }).then(() => {
 
 module.exports = {
 	sequelize,
-	User
+	User,
+	Order,
+	Bill,
 };

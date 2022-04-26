@@ -48,3 +48,18 @@ Content-Type: application/json
 
 ### Delete a user with a DELETE request
 DELETE http://localhost:3000/users/1
+
+# ORDERS
+
+### Create a order with a POST request using shippingAddress
+POST http://localhost:3000/orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MDk3NzU1MSwiZXhwIjoxNjUxMDYzOTUxfQ.yT58GHLEMmQYPa1xiFIsIfW9nYcoUhKkkqdDxZ5KvOw
+Content-Type: application/json
+
+{
+  "cart": [
+    { "productId": 1, "quantity": 2 },
+    { "productId": 2, "quantity": 1 }
+  ],
+  "shippingAddress": "5 rue Général, 75015 Paris"
+}

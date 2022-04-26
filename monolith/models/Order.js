@@ -1,20 +1,19 @@
 const { Model, DataTypes } = require("sequelize");
-const User = require("./User");
 const sequelize = require("../lib/db");
 
 class Order extends Model {}
 
 Order.init(
 	{
-		shippingAdress: {
+		shippingAddress: {
 			type: DataTypes.STRING,
 			allowNull: false
 		},
-		FactureId: {
+		status: {
 			type: DataTypes.STRING,
 			allowNull: false,
-			unique: true
-		}
+			defaultValue: "created"
+		},
 	},
 	{ sequelize, modelName: "Order" }
 );
