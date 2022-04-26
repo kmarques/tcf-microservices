@@ -23,8 +23,6 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    billingAddress: { type: DataTypes.ARRAY(DataTypes.STRING) },
-    shippingAddress: { type: DataTypes.ARRAY(DataTypes.STRING) },
     role: { 
       type: DataTypes.STRING,
       defaultValue: "customer" },

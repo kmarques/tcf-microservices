@@ -3,10 +3,10 @@
 const Router = require("express").Router;
 const UserController = require("../controllers/User");
 const authentication = require("../middlewares/authentication");
-const roleAuthorization = require("../middlewares/roleAuthorization");
+const roleAuthorization = require("../middlewares/authorization");
 
 const router = new Router();
-router.get("/", authentication, roleAuthorization, UserController.cget);
+router.get("/", authentication, roleAuthorization({role : 'admin'}), UserController.cget);
 
 router.post("/", authentication, UserController.post);
 
