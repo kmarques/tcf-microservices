@@ -4,7 +4,6 @@
 // Path: monolith/models/Editor.js
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../lib/db");
-const bcrypt = require("bcryptjs");
 
 class Editor extends Model {}
 
