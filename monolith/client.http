@@ -48,3 +48,37 @@ Content-Type: application/json
 
 ### Delete a user with a DELETE request
 DELETE http://localhost:3000/users/1
+
+### Post product
+
+POST http://localhost:3000/products/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MDk4NDYwNSwiZXhwIjoxNjUxMDcxMDA1fQ.zyGRubwL277Bvxxx3YxdmZae8wbQK9WGEOnOud32V9w
+Content-Type: application/json
+
+{
+  "name": "test",
+  "authorsId": [1,2],
+  "editorId": 1,
+  "price": "A",
+  "description": "A",
+  "categoryId": 1,
+  "imageUrl": "test"
+}
+
+## Post author
+
+POST http://localhost:3000/authors/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MDk4NDYwNSwiZXhwIjoxNjUxMDcxMDA1fQ.zyGRubwL277Bvxxx3YxdmZae8wbQK9WGEOnOud32V9w
+Content-Type: application/json
+
+{
+  "name": "test",
+  "biography": "1",
+  "editorId": "1",
+}
+
+### Post product
+
+POST http://localhost:3000/test/products/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MDk4MzE5OCwiZXhwIjoxNjUxMDY5NTk4fQ.n6gd-85iJraPZvAeszj4HUrpIm245ZNTdIpGeBqPlfI
+

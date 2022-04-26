@@ -10,6 +10,10 @@ class Author extends Model {}
 
 Author.init(
   {
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     biography: {
       type: DataTypes.STRING,
       allowNull: false,

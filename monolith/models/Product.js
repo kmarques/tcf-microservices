@@ -14,24 +14,11 @@ Product.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    authorId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    editorId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     price: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     description: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    categoryId: {
       type: DataTypes.STRING,
       allowNull: false,
     },
