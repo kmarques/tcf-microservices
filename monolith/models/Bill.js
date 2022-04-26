@@ -5,16 +5,16 @@ class Bill extends Model {}
 
 Bill.init(
 	{
-		Path: {
+		path: {
 			type: DataTypes.STRING,
 			allowNull: false
 		},
-		ExpiredAt: {
+		expiredAt: {
 			type: DataTypes.STRING,
 			allowNull: false,
-			unique: true
+			defaultValue: "10y"
 		},
-		BillingAddress: {
+		billingAddress: {
 			type: DataTypes.STRING,
 			allowNull: false
 		}

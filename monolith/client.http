@@ -58,8 +58,29 @@ Content-Type: application/json
 
 {
   "cart": [
-    { "productId": 1, "quantity": 2 },
+    { "productId": 2, "quantity": 2 },
     { "productId": 2, "quantity": 1 }
   ],
   "shippingAddress": "5 rue Général, 75015 Paris"
+}
+
+
+### Create a bill with a POST request
+POST http://localhost:3000/test/bill
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MDk3NzU1MSwiZXhwIjoxNjUxMDYzOTUxfQ.yT58GHLEMmQYPa1xiFIsIfW9nYcoUhKkkqdDxZ5KvOw
+Content-Type: application/json  
+
+{
+  "orderId" : 3
+}
+
+###
+
+
+DELETE http://localhost:3000/test/bill/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MDk3NzU1MSwiZXhwIjoxNjUxMDYzOTUxfQ.yT58GHLEMmQYPa1xiFIsIfW9nYcoUhKkkqdDxZ5KvOw
+Content-Type: application/json  
+
+{
+  "orderId" :1
 }
