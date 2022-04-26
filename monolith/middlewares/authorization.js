@@ -1,3 +1,4 @@
+const IAM = require("../models/IAM");
 const {READ, WRITE} = require("../lib/addIAM").constants
 
 module.exports = (options = {}) => async (req, res, next) => {

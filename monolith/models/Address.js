@@ -1,9 +1,9 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../lib/db");
 
-class Adress extends Model {}
+class Address extends Model {}
 
-Adress.init(
+Address.init(
   {
     country: {
       type: DataTypes.STRING,
@@ -13,13 +13,13 @@ Adress.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    adressString: {
+    addressString: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
   },
-  { sequelize, modelName: "Adress" }
+  { sequelize, modelName: "Address" }
 );
 
-module.exports = Adress;
+module.exports = Address;

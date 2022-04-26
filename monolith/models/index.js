@@ -1,11 +1,11 @@
 const sequelize = require("../lib/db");
 const User = require("../models/User");
-const Adress = require("../models/Adress");
+const Address = require("../models/Address");
 const IAM = require("../models/IAM");
 
-User.hasMany(Adress, {as: "shippingAddress", foreignKey: "shipperId"});
-User.hasMany(Adress, {as: "billingAddress", foreignKey: "billerId"});
-Adress.belongsTo(User);
+User.hasMany(Address, {as: "shippingAddress", foreignKey: "shipperId"});
+User.hasMany(Address, {as: "billingAddress", foreignKey: "billerId"});
+Address.belongsTo(User);
 
 User.hasMany(IAM);
 IAM.belongsTo(User);
@@ -17,6 +17,6 @@ sequelize.sync({ alter: true }).then(() => {
 module.exports = {
   sequelize,
   User,
-  Adress,
+  Address,
   IAM,
 };
