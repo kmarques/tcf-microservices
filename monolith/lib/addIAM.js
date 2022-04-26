@@ -2,7 +2,7 @@ const IAM = require("../models/IAM")
 
 exports.constants = {READ : 1, WRITE : 2}
 
-exports.addIAM = (resourceType, resourceId, acl) => {
+exports.addIAM = async (resourceType, resourceId, acl) => {
     try {
         const newIAM = await IAM.create({
             resourceType: resourceType,

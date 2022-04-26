@@ -9,7 +9,7 @@ router.post("/", UserController.post);
 
 router.get("/:id", UserController.get);
 
-router.put("/:id", UserController.put);
+router.put("/:id", authorization({role : 'admin', checkACL: false}), UserController.put);
 
 router.delete("/:id", UserController.delete);
 

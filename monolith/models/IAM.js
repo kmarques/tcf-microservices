@@ -15,7 +15,7 @@ IAM.init(
       allowNull: false,
     },
     acl: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.SMALLINT,
       validate: {isIn: [Object.values(constants)]},
       allowNull: false
     }
