@@ -63,3 +63,6 @@ Content-Type: application/json
   ],
   "shippingAddress": "5 rue Général, 75015 Paris"
 }
+
+### Create a order with a POST request using shippingAddress
+GET http://localhost:3000/test/pdf
