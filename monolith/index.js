@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 console.log(process.env);
-app.use(express.json());
+app.use(express.json({verify: (req,res,buf) => { req.rawBody = buf }}));
 
 app.use("/", require("./routes/security"));
 app.use('/payment', require('./routes/payment'));
