@@ -50,22 +50,9 @@ Content-Type: application/json
 DELETE http://localhost:3000/users/1
 
 ### Create payment intent
-POST http://localhost:3000/payment/create-payment-intent
+POST http://localhost:3000/payment
 Content-Type: application/json
 
 {
-    "items": [
-        {
-            "id": 1,
-            "price": 6999
-        },
-        {
-            "id": 2,
-            "price": 6999
-        },
-        {
-            "id": 3,
-            "price": 6999
-        }
-    ]
+  "id": 12
 }
