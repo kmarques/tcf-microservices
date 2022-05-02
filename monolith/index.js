@@ -2,17 +2,16 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const pdf = require("./lib/pdf");
-console.log(process.env);
-app.use(express.json());
 const BillController = require("./controllers/Bill");
 
-const middlewares = require("./middlewares");
+app.use(express.json({verify: (req,res,buf) => { req.rawBody = buf }}));
 
 app.use("/", require("./routes/security"));
+app.use('/payment', require('./routes/payment'));
+app.use("/users", require("./middlewares/authentication"), require("./routes/User"));
+app.use("/orders", require("./middlewares/authentication"), require("./routes/Order"));
 
-app.use("/users", middlewares.security, require("./routes/User"));
 
-app.use("/orders", middlewares.security, require("./routes/Order"));
 app.get("/test/pdf", async (req, res) => {
   console.log("start");
   await pdf({
@@ -32,9 +31,9 @@ app.get("/test/pdf", async (req, res) => {
   });
   res.json("ok");
 });
-
 app.post("/test/bill", BillController.post);
 
+
 app.listen(process.env.PORT || 3000, () => {
-	console.log("Server is running on port " + process.env.PORT);
+  console.log("Server is running on port " + process.env.PORT);
 });
