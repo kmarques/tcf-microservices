@@ -3,8 +3,8 @@ POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-  "email": "test@test.com",
-  "password": "test"
+  "email": "baw@test.com",
+  "password": "baw"
 }
 
 ### Register
@@ -12,10 +12,11 @@ POST http://localhost:3000/register
 Content-Type: application/json
 
 {
-    "lastname": "test",
-    "firstname": "test",
-  "email": "test@test.com",
-  "password": "test"
+  "lastname": "test",
+  "firstname": "test",
+  "role": "admin",
+  "email": "baw@test.com",
+  "password": "baw"
 }
 
 ### GET all users
@@ -38,12 +39,13 @@ GET http://localhost:3000/users/1
 
 
 ### Update a user with a PUT request using lastname, firstname, email, password
-PUT http://localhost:3000/users/1
+PUT http://localhost:3000/users/7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYmF3QHRlc3QuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjUwOTg4MzIyLCJleHAiOjE2NTEwNzQ3MjJ9.MqIphWzkGfczA9zIUlEcppZM8RYtYMH5F3asgiazBo4
 Content-Type: application/json
 
 {
   "lastname": "Doe",
-  "firstname": "Jane",
+  "firstname": "Jane"
 }
 
 ### Delete a user with a DELETE request
