@@ -1,5 +1,6 @@
 const sequelize = require("../lib/db");
 const User = require("../models/User");
+const Inventory = require("../models/Inventory");
 const Payment = require("../models/Payment");
 const Notification = require("../models/Notification");
 const Order = require("../models/Order");
@@ -56,6 +57,9 @@ Product.belongsTo(Editor);
 // OrderProduct - Product
 OrderProduct.belongsTo(Product);
 Product.hasMany(OrderProduct);
+// Product - Inventory
+Product.hasMany(Inventory);
+Inventory.belongsTo(Product);
 
 sequelize.sync({ alter: true }).then(() => {
   console.log("Database & tables created!");
@@ -66,6 +70,7 @@ module.exports = {
   Bill,
   sequelize,
   User,
+  Inventory,
   Product,
   Author,
   Category,

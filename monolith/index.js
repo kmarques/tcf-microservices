@@ -5,6 +5,7 @@ const express = require("express");
 const app = express();
 const pdf = require("./lib/pdf");
 const BillController = require("./controllers/Bill");
+const InventoryController = require("../controllers/Inventory");
 
 app.use(
   express.json({
@@ -56,3 +57,7 @@ app.post("/test/bill", BillController.post);
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server is running on port " + process.env.PORT);
 });
+
+setInterval(() => {
+  InventoryController.removeExpired();
+}, 15 * 60 * 1000);
