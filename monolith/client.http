@@ -39,7 +39,7 @@ Content-Type: application/json
 
 ### GET a user
 GET http://localhost:3000/users/1
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4MDYyMiwiZXhwIjoxNjUxNTY3MDIyfQ.nQa2qLMPLhYQQpEFsfRHND_CzgFPaZBhST4JiPe7AKQ
 
 ### Update a user with a PUT request using lastname, firstname, email, password
 PUT http://localhost:3000/users/7
@@ -53,6 +53,39 @@ Content-Type: application/json
 
 ### Delete a user with a DELETE request
 DELETE http://localhost:3000/users/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4MDYyMiwiZXhwIjoxNjUxNTY3MDIyfQ.nQa2qLMPLhYQQpEFsfRHND_CzgFPaZBhST4JiPe7AKQ
+
+### Post product
+POST http://localhost:3000/products/
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4NDMyMCwiZXhwIjoxNjUxNTcwNzIwfQ.5K2DpB8idsUFrzf9EdwzuJTy3A3NW1DBav0DaLJq-ro
+Content-Type: application/json
+
+{
+  "name": "test",
+  "AuthorsId": [1,2],
+  "EditorId": 1,
+  "price": 9.99,
+  "description": "A",
+  "CategoryId": 1,
+  "imageUrl": "test"
+}
+
+### GET a product
+GET http://localhost:3000/products/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4MDYyMiwiZXhwIjoxNjUxNTY3MDIyfQ.nQa2qLMPLhYQQpEFsfRHND_CzgFPaZBhST4JiPe7AKQ
+
+### GET all product
+GET http://localhost:3000/products/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4MDYyMiwiZXhwIjoxNjUxNTY3MDIyfQ.nQa2qLMPLhYQQpEFsfRHND_CzgFPaZBhST4JiPe7AKQ
+
+### Delete a product with a DELETE request
+DELETE http://localhost:3000/products/10
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4MDYyMiwiZXhwIjoxNjUxNTY3MDIyfQ.nQa2qLMPLhYQQpEFsfRHND_CzgFPaZBhST4JiPe7AKQ
+
+# Create Author Categories Editors
+### Post test product
+POST http://localhost:3000/test/products/
+
 
 # ORDERS
 

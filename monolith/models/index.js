@@ -7,6 +7,10 @@ const Bill = require("../models/Bill");
 const OrderProduct = require("../models/OrderProduct");
 const Address = require("../models/Address");
 const IAM = require("../models/IAM");
+const Product = require("../models/Product");
+const Author = require("../models/Author");
+const Category = require("../models/Category");
+const Editor = require("./Editor");
 
 Payment.hasMany(Notification);
 Notification.belongsTo(Payment);
@@ -29,6 +33,20 @@ Bill.belongsTo(Order);
 
 Order.hasMany(OrderProduct);
 OrderProduct.belongsTo(Order);
+Category.hasMany(Product);
+Product.belongsTo(Category);
+
+Product.belongsToMany(Author, {
+  through: "ProductAuthor",
+  foreignKey: "ProductId",
+});
+Author.belongsToMany(Product, {
+  through: "ProductAuthor",
+  foreignKey: "AuthorId",
+});
+
+Editor.hasMany(Product);
+Product.belongsTo(Editor);
 
 sequelize.sync({ alter: true }).then(() => {
 	console.log("Database & tables created!");
@@ -39,6 +57,10 @@ module.exports = {
 	Bill,
   sequelize,
   User,
+  Product,
+  Author,
+  Category,
+  Editor,
   Payment,
   Notification,
   OrderProduct,
