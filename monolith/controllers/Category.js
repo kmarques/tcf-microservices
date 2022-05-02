@@ -1,35 +1,23 @@
-const { User, IAM, sequelize } = require("../models");
-const { WRITE } = require("../lib/addIAM").constants;
-const Sequelize = require("sequelize");
+const { Category } = require("../models");
 const format = require("../lib/error").formatError;
+const Sequelize = require("sequelize");
+
 module.exports = {
   cget: async (req, res) => {
-    console.log("Get user collections");
+    console.log("Get category collections");
     try {
-      const users = await User.findAll({ where: req.query });
-      res.json(users);
+      const categorys = await Category.findAll({ where: req.query });
+      res.json(categorys);
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
   },
 
   post: async (req, res) => {
-    const t = await sequelize.transaction();
     try {
-      const user = await User.create(req.body, { transaction: t });
-      await IAM.create(
-        {
-          resourceType: "users",
-          resourceId: user.id,
-          UserId: user.id,
-          acl: WRITE,
-        },
-        { transaction: t }
-      );
-      await t.commit();
-      res.status(201).json(user);
+      const category = await Category.create(req.body);
+      res.status(201).json(category);
     } catch (err) {
-      await t.rollback();
       if (err instanceof Sequelize.ValidationError) {
         res.status(400).json(format(err));
       } else {
@@ -40,8 +28,8 @@ module.exports = {
 
   get: async (req, res) => {
     try {
-      const user = await User.findByPk(req.params.id);
-      res.json(user);
+      const category = await Category.findByPk(req.params.id);
+      res.json(category);
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
@@ -49,9 +37,9 @@ module.exports = {
 
   put: async (req, res) => {
     try {
-      const user = await User.findByPk(req.params.id);
-      await user.update(req.body);
-      res.json(user);
+      const category = await Category.findByPk(req.params.id);
+      await category.update(req.body);
+      res.json(category);
     } catch (err) {
       if (err instanceof Sequelize.ValidationError) {
         res.status(400).json(format(err));
@@ -63,12 +51,11 @@ module.exports = {
 
   delete: async (req, res) => {
     try {
-      const user = await User.findByPk(req.params.id);
-      await user.destroy();
+      const category = await Category.findByPk(req.params.id);
+      await category.destroy();
       res.status(204).end();
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
   },
 };
-

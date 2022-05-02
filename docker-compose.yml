@@ -21,6 +21,7 @@ services:
         - DATABASE_URL=postgres://root:password@db:5432/monolith
         - PORT=3000
         - JWT_SECRET=s3cr3t
+        - NODE_ENV=dev
       ports:
         - "3000:3000"
       command: "sh -c 'npm install; npm run start'"

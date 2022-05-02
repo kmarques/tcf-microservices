@@ -1,10 +1,13 @@
+@tokenUser=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJiYXdAdGVzdC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTY1MTQ5MzQwMSwiZXhwIjoxNjUxNTc5ODAxfQ.HMi_KUOp16DmThBUXvmIWpcNlE2O_aI4fvGBz74-Hrg
+@tokenAdmin=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1MTQ5MzQzOSwiZXhwIjoxNjUxNTc5ODM5fQ.ilBsEZpaSXjwmgJFgVzW3jcMgsxGb63--A2JriTyh9o
+
 ### Login
 POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-  "email": "test@test.com",
-  "password": "test"
+  "email": "admin@test.com",
+  "password": "admin"
 }
 
 ### Register
@@ -12,39 +15,121 @@ POST http://localhost:3000/register
 Content-Type: application/json
 
 {
-    "lastname": "test",
-    "firstname": "test",
-  "email": "test@test.com",
-  "password": "test"
+  "lastname": "test",
+  "firstname": "test",
+  "role": "admin",
+  "email": "admin@test.com",
+  "password": "admin"
 }
 
 ### GET all users
 GET http://localhost:3000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY0OTY4NjMyNywiZXhwIjoxNjQ5NzcyNzI3fQ.SDRf1vdeXC-hzm-UQvw6G2Xut0GMA5Djabs4OFRz6Nw
+// use token variable
+Authorization: Bearer {{tokenAdmin}}
 
 ### Create a user with a POST request using lastname, firstname, email, password
 POST http://localhost:3000/users
 Content-Type: application/json
+Authorization: Bearer {{tokenUser}}
 
 {
   "lastname": "Doe",
   "firstname": "John",
-  "email": "test@test.com",
+  "email": "test2@test.com",
   "password": "test"
 }
 
 ### GET a user
 GET http://localhost:3000/users/1
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4MDYyMiwiZXhwIjoxNjUxNTY3MDIyfQ.nQa2qLMPLhYQQpEFsfRHND_CzgFPaZBhST4JiPe7AKQ
 
 ### Update a user with a PUT request using lastname, firstname, email, password
-PUT http://localhost:3000/users/1
+PUT http://localhost:3000/users/7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYmF3QHRlc3QuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjUwOTg4MzIyLCJleHAiOjE2NTEwNzQ3MjJ9.MqIphWzkGfczA9zIUlEcppZM8RYtYMH5F3asgiazBo4
 Content-Type: application/json
 
 {
   "lastname": "Doe",
-  "firstname": "Jane",
+  "firstname": "Jane"
 }
 
 ### Delete a user with a DELETE request
 DELETE http://localhost:3000/users/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4MDYyMiwiZXhwIjoxNjUxNTY3MDIyfQ.nQa2qLMPLhYQQpEFsfRHND_CzgFPaZBhST4JiPe7AKQ
+
+### Post product
+POST http://localhost:3000/products/
+Authorization: Bearer {{tokenUser}}
+Content-Type: application/json
+
+{
+  "name": "test",
+  "authors": [1,2],
+  "EditorId": 1,
+  "price": 9.99,
+  "description": "A",
+  "CategoryId": 1,
+  "imageUrl": "test"
+}
+
+### GET a product
+GET http://localhost:3000/products/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4MDYyMiwiZXhwIjoxNjUxNTY3MDIyfQ.nQa2qLMPLhYQQpEFsfRHND_CzgFPaZBhST4JiPe7AKQ
+
+### GET all product
+GET http://localhost:3000/products/
+Authorization: Bearer {{tokenUser}}
+
+### Delete a product with a DELETE request
+DELETE http://localhost:3000/products/10
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4MDYyMiwiZXhwIjoxNjUxNTY3MDIyfQ.nQa2qLMPLhYQQpEFsfRHND_CzgFPaZBhST4JiPe7AKQ
+
+# Create Author Categories Editors
+### Post test product
+POST http://localhost:3000/test/products/
+
+
+# ORDERS
+
+### Create a order with a POST request using shippingAddress
+POST http://localhost:3000/orders
+Authorization: Bearer {{tokenUser}}
+Content-Type: application/json
+
+{
+  "cart": [
+    { "productId": 5, "quantity": 10 },
+    { "productId": 7, "quantity": 20}
+  ],
+  "shippingAddress": "5 rue Général, 75015 Paris"
+}
+
+### Create a order with a POST request using shippingAddress
+GET http://localhost:3000/test/pdf
+
+### Create a bill with a POST request
+POST http://localhost:3000/test/bill
+Authorization: Bearer {{token}}
+Content-Type: application/json  
+
+{
+  "orderId" : 6
+}
+
+###
+
+
+DELETE http://localhost:3000/test/bill/1
+Authorization: Bearer {{token}}
+Content-Type: application/json  
+
+{
+  "orderId" :1
+}
+### Create payment intent
+POST http://localhost:3000/payment
+Content-Type: application/json
+
+{
+  "id": 6
+}
