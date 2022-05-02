@@ -23,9 +23,10 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    role: { 
+    role: {
       type: DataTypes.STRING,
-      defaultValue: "customer" },
+      defaultValue: "customer",
+    },
   },
   { sequelize, modelName: "User" }
 );

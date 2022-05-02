@@ -8,7 +8,8 @@ Payment.init(
     status: {
       type: DataTypes.STRING,
       allowNull: false,
-    }
+    },
+    paymentIntentId: DataTypes.STRING,
   },
   { sequelize, modelName: "Payment" }
 );

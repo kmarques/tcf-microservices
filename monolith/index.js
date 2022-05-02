@@ -1,16 +1,36 @@
-require("dotenv").config();
+const dotenv = require("dotenv");
+[".env", ".env.local"].forEach((path) => dotenv.config({ path }));
+
 const express = require("express");
 const app = express();
 const pdf = require("./lib/pdf");
 const BillController = require("./controllers/Bill");
 
-app.use(express.json({verify: (req,res,buf) => { req.rawBody = buf }}));
+app.use(
+  express.json({
+    verify: (req, res, buf) => {
+      req.rawBody = buf;
+    },
+  })
+);
 
 app.use("/", require("./routes/security"));
-app.use('/payment', require('./routes/payment'));
-app.use("/users", require("./middlewares/authentication"), require("./routes/User"));
-app.use("/orders", require("./middlewares/authentication"), require("./routes/Order"));
-app.use("/products", require("./middlewares/authentication"), require("./routes/Product"));
+app.use("/payment", require("./routes/payment"));
+app.use(
+  "/users",
+  require("./middlewares/authentication"),
+  require("./routes/User")
+);
+app.use(
+  "/orders",
+  require("./middlewares/authentication"),
+  require("./routes/Order")
+);
+app.use(
+  "/products",
+  require("./middlewares/authentication"),
+  require("./routes/Product")
+);
 
 app.get("/test/pdf", async (req, res) => {
   console.log("start");
@@ -26,7 +46,7 @@ app.get("/test/pdf", async (req, res) => {
         name: "Coco",
         quantity: 1,
         price: 12,
-      }
+      },
     ],
   });
   res.json("ok");

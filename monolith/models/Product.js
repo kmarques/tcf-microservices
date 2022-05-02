@@ -14,7 +14,7 @@ Product.init(
       allowNull: false,
     },
     price: {
-      type: DataTypes.DECIMAL(10, 2),
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     description: {
@@ -22,8 +22,8 @@ Product.init(
       allowNull: false,
     },
     imageUrl: {
-        type: DataTypes.STRING,
-        allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
   { sequelize, modelName: "Product" }
