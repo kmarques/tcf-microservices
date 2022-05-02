@@ -1,4 +1,4 @@
-const { Product } = require("../models");
+const { Product, ProductAuthor ,  sequelize } = require("../models");
 
 module.exports = {
   cget: async (req, res) => {
@@ -12,11 +12,24 @@ module.exports = {
   },
 
   post: async (req, res) => {
+    const t = await sequelize.transaction();
+
     try {
-      const product = await Product.create(req.body);
+      const product = await Product.create(req.body, { transaction: t });      
+      for (const authorId of req.body.AuthorsId) {
+        const productAuthor = await ProductAuthor.create({
+          ProductId: product.id,
+          AuthorId: authorId,
+        }, { transaction: t });
+        console.log(productAuthor);
+      }
+      await t.commit();
       res.status(201).json(product);
-    } catch (err) {
-      if (err instanceof Sequelize.ValidationError) {
+    } 
+    catch (err) {
+      console.error(err);
+      await t.rollback();
+      if (err instanceof sequelize.ValidationError) {
         res.status(400).json(format(err));
       } else {
         res.status(500).json({ message: err.message });

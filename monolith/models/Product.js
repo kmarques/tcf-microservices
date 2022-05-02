@@ -4,7 +4,6 @@
 // Path: monolith/models/Product.js
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../lib/db");
-const bcrypt = require("bcryptjs");
 
 class Product extends Model {}
 
@@ -15,7 +14,7 @@ Product.init(
       allowNull: false,
     },
     price: {
-      type: DataTypes.STRING,
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
     description: {
