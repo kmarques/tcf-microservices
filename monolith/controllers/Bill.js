@@ -29,6 +29,7 @@ module.exports = {
 				UserId: order.UserId,
 				OrderId: orderId
 			});
+			console.log(bill);
 
 			res.status(201).json(bill, orderProducts);
 		} catch (err) {
