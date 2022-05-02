@@ -2,7 +2,9 @@ const sequelize = require("../lib/db");
 const User = require("../models/User");
 const Payment = require('../models/Payment');
 const Notification = require('../models/Notification');
-const OrderProduct = require('../models/MockOrderProduct');
+const Order = require("../models/Order");
+const Bill = require("../models/Bill");
+const OrderProduct = require("../models/OrderProduct");
 const Address = require("../models/Address");
 const IAM = require("../models/IAM");
 
@@ -16,11 +18,25 @@ Address.belongsTo(User);
 User.hasMany(IAM);
 IAM.belongsTo(User);
 
+User.hasMany(Order);
+Order.belongsTo(User);
+
+User.hasMany(Bill);
+Bill.belongsTo(User);
+
+Order.hasOne(Bill);
+Bill.belongsTo(Order);
+
+Order.hasMany(OrderProduct);
+OrderProduct.belongsTo(Order);
+
 sequelize.sync({ alter: true }).then(() => {
-  console.log("Database & tables created!");
+	console.log("Database & tables created!");
 });
 
 module.exports = {
+	Order,
+	Bill,
   sequelize,
   User,
   Payment,

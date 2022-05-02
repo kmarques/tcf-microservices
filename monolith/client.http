@@ -1,3 +1,5 @@
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ3OTQ3MywiZXhwIjoxNjUxNTY1ODczfQ.IshaIIx1Jv8LvCKo0mZocCO1oVIm93O4bIEklDiTPFU
+
 ### Login
 POST http://localhost:3000/login
 Content-Type: application/json
@@ -21,7 +23,8 @@ Content-Type: application/json
 
 ### GET all users
 GET http://localhost:3000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY0OTY4NjMyNywiZXhwIjoxNjQ5NzcyNzI3fQ.SDRf1vdeXC-hzm-UQvw6G2Xut0GMA5Djabs4OFRz6Nw
+// use token variable
+Authorization: Bearer {{token}}
 
 ### Create a user with a POST request using lastname, firstname, email, password
 POST http://localhost:3000/users
@@ -51,6 +54,43 @@ Content-Type: application/json
 ### Delete a user with a DELETE request
 DELETE http://localhost:3000/users/1
 
+# ORDERS
+
+### Create a order with a POST request using shippingAddress
+POST http://localhost:3000/orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "cart": [
+    { "productId": 1, "quantity": 10 },
+    { "productId": 2, "quantity": 20}
+  ],
+  "shippingAddress": "5 rue Général, 75015 Paris"
+}
+
+### Create a order with a POST request using shippingAddress
+GET http://localhost:3000/test/pdf
+
+### Create a bill with a POST request
+POST http://localhost:3000/test/bill
+Authorization: Bearer {{token}}
+Content-Type: application/json  
+
+{
+  "orderId" : 6
+}
+
+###
+
+
+DELETE http://localhost:3000/test/bill/1
+Authorization: Bearer {{token}}
+Content-Type: application/json  
+
+{
+  "orderId" :1
+}
 ### Create payment intent
 POST http://localhost:3000/payment
 Content-Type: application/json
