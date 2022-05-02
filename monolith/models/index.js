@@ -3,16 +3,22 @@ const User = require("../models/User");
 const Product = require("../models/Product");
 const Author = require("../models/Author");
 const Category = require("../models/Category");
-const ProductAuthor = require("../models/ProductAuthor");
 const Editor = require("./Editor");
+const ProductAuthor = sequelize.define('ProductAuthor')
+
 
 Category.hasMany(Product);
 Product.belongsTo(Category);
 
-ProductAuthor.hasMany(Author);
-Author.belongsTo(ProductAuthor);
-ProductAuthor.hasMany(Product);
-Product.belongsTo(ProductAuthor);
+Product.belongsToMany(Author, {
+  through: "ProductAuthor",
+  foreignKey: "ProductId",
+});
+Author.belongsToMany(Product, {
+  through: "ProductAuthor",
+  foreignKey: "AuthorId",
+});
+
 Editor.hasMany(Product);
 Product.belongsTo(Editor);
 
@@ -27,4 +33,5 @@ module.exports = {
   Author,
   Category,
   Editor,
+  ProductAuthor,
 };

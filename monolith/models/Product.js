@@ -4,7 +4,6 @@
 // Path: monolith/models/Product.js
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../lib/db");
-const bcrypt = require("bcryptjs");
 
 class Product extends Model {}
 
@@ -14,24 +13,11 @@ Product.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    authorId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-    },
-    editorId: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     price: {
-      type: DataTypes.STRING,
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
     description: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    categoryId: {
       type: DataTypes.STRING,
       allowNull: false,
     },
