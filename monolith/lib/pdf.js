@@ -3,10 +3,6 @@ var easyinvoice = require("easyinvoice");
 let fs = require("fs");
 
 module.exports = async bill => {
-	console.log("====================================");
-	console.log(bill.user);
-	console.log("====================================");
-
 	// Create a new invoice
 	let orderDate = new Date(bill.createdAt);
 	let dueDate = new Date(bill.createdAt);
@@ -61,9 +57,9 @@ module.exports = async bill => {
 		"bottom-notice": "",
 		// Settings to customize your invoice
 		settings: {
-			currency: "EUR" // See documentation 'Locales and Currency' for more info. Leave empty for no currency.
-			// "locale": "nl-NL", // Defaults to en-US, used for number formatting (See documentation 'Locales and Currency')
-			// "tax-notation": "gst", // Defaults to 'vat'
+			currency: "EUR", // See documentation 'Locales and Currency' for more info. Leave empty for no currency.
+			locale: "fr-FR", // Defaults to en-US, used for number formatting (See documentation 'Locales and Currency')
+			"tax-notation": "tva" // Defaults to 'vat'
 			// "margin-top": 25, // Defaults to '25'
 			// "margin-right": 25, // Defaults to '25'
 			// "margin-left": 25, // Defaults to '25'
@@ -78,7 +74,7 @@ module.exports = async bill => {
 			invoice: "FACTURE", // Default to 'INVOICE'
 			number: "Numéro", // Defaults to 'Number'
 			date: "Date", // Default to 'Date'
-			"due-date": "Date d'échéance", // Defaults to 'Due Date'
+			"due-date": "Date d'expiration", // Defaults to 'Due Date'
 			subtotal: "Sous-total", // Defaults to 'Subtotal'
 			products: "Produits", // Defaults to 'Products'
 			quantity: "Quantité", // Default to 'Quantity'
