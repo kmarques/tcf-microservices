@@ -1,4 +1,5 @@
 require("dotenv").config();
+const InventoryController = require("../controllers/Inventory");
 const express = require("express");
 const app = express();
 console.log(process.env);
@@ -10,3 +11,7 @@ app.use("/users", require("./middlewares/security"), require("./routes/User"));
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server is running on port " + process.env.PORT);
 });
+
+setInterval(() => {
+  InventoryController.removeExpired();
+}, 15 * 60 * 1000);
