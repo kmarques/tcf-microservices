@@ -24,6 +24,7 @@ module.exports = {
 				{ id: 1, unitPrice: 20 },
 				{ id: 2, unitPrice: 12 }
 			];
+
 			// console.log("ODRER ID", order.id);
 			for (const cartItem of req.body.cart) {
 				// item.productId, item.quantity,

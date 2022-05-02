@@ -1,5 +1,6 @@
-const { Bill, Order } = require("../models");
+const { Bill, Order, User } = require("../models");
 const OrderProduct = require("../models/OrderProduct");
+const pdf = require("../lib/pdf");
 
 module.exports = {
 	cget: async (req, res) => {
@@ -17,6 +18,7 @@ module.exports = {
 			const { orderId } = req.body;
 			// Create Bill
 			const order = await Order.findByPk(orderId);
+			const user = await User.findByPk(order.UserId);
 
 			// Create OrderProducts
 			const orderProducts = await OrderProduct.findAll({
@@ -29,9 +31,18 @@ module.exports = {
 				UserId: order.UserId,
 				OrderId: orderId
 			});
-			console.log(bill);
 
-			res.status(201).json(bill, orderProducts);
+			pdf({ ...bill.dataValues, orderProducts, user: user.dataValues })
+				.then(data => {
+					console.log(data);
+					res.json(data);
+				})
+				.catch(err => {
+					console.log(err);
+					res.status(500).json({ message: err.message });
+				});
+
+			// res.status(201).json({ bill, orderProducts });
 		} catch (err) {
 			if (err instanceof Sequelize.ValidationError) {
 				res.status(400).json(format(err));
