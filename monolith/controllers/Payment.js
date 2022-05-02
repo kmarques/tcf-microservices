@@ -1,8 +1,8 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-const { Payment, Notification, MockOrderProduct } = require("../models");
+const { Payment, Notification, OrderProduct } = require("../models");
 
 const findOrderById = async function (id, res) {
-    const order = await MockOrderProduct.findOne({
+    const order = await OrderProduct.findOne({
         where: {
             id
         }
