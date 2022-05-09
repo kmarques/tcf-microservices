@@ -1,7 +1,11 @@
 const { Order, Product } = require("../models");
-const OrderProduct = require("../models/OrderProduct");
 const Sequelize = require("sequelize");
-const format = require("../lib/error").formatError;
+
+const calculateOrderAmount = async order => {
+	return order.OrderProducts.reduce((acc, item) => {
+		return acc + item.unitPrice * item.quantity;
+	}, 0);
+};
 
 module.exports = {
 	cget: async (req, res) => {
@@ -16,7 +20,7 @@ module.exports = {
 
 	post: async (req, res) => {
 		try {
-			const userId = req.headers["X-UserId"];
+			const userId = req.headers["X-User-Id"];
 			const { shippingAddress } = req.body;
 			const order = await Order.create({
 				UserId: userId,
@@ -68,7 +72,11 @@ module.exports = {
 	get: async (req, res) => {
 		try {
 			const order = await Order.findByPk(req.params.id);
-			res.json(order);
+			res.json({
+				...order,
+				total: calculateOrderAmount(order),
+				orderId: order.id
+			});
 		} catch (err) {
 			res.status(500).json({ message: err.message });
 		}
