@@ -133,3 +133,25 @@ Content-Type: application/json
 {
   "id": 6
 }
+
+### Get stocks quantity
+GET http://localhost:3000/products/4/stock
+Authorization: Bearer {{tokenUser}}
+
+### Get stocks events
+GET http://localhost:3000/products/4/stock_events
+Authorization: Bearer {{tokenUser}}
+
+### POST stocks events
+POST http://localhost:3000/products/4/stock_events
+Authorization: Bearer {{tokenUser}}
+Content-Type: application/json
+
+{
+  "typeEvent": "RESERVATION",
+  "quantity": 10
+}
+
+### DELETE stocks events
+DELETE http://localhost:3000/products/4/stock_events/4
+Authorization: Bearer {{tokenUser}}

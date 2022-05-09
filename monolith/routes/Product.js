@@ -14,4 +14,6 @@ router.put("/:id", ProductController.put);
 
 router.delete("/:id", ProductController.delete);
 
+router.use("/", require("./Inventory"));
+
 module.exports = router;

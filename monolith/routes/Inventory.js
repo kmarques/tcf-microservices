@@ -1,8 +1,10 @@
 const Router = require("express").Router;
 const InventoryController = require("../controllers/Inventory");
-const router = require("./Inventory");
+const router = new Router();
 
-router.cget("prod/:id/stock_events", InventoryController.cget);
-router.iget("prod/:id/stock", InventoryController.quantity)
-router.post("prod/:id/stock_events", InventoryController.post);
-router.delete("prod/:id/stock_events/:stockId", InventoryController.delete);
+router.get("/:id/stock_events", InventoryController.cget);
+router.get("/:id/stock", InventoryController.quantity);
+router.post("/:id/stock_events", InventoryController.post);
+router.delete("/:id/stock_events/:stockId", InventoryController.delete);
+
+module.exports = router;

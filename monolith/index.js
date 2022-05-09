@@ -5,7 +5,7 @@ const express = require("express");
 const app = express();
 const pdf = require("./lib/pdf");
 const BillController = require("./controllers/Bill");
-const InventoryController = require("../controllers/Inventory");
+const InventoryController = require("./controllers/Inventory");
 
 app.use(
   express.json({
@@ -33,31 +33,10 @@ app.use(
   require("./routes/Product")
 );
 
-app.get("/test/pdf", async (req, res) => {
-  console.log("start");
-  await pdf({
-    billingAddress: "5 rue general, 75012 Paris",
-    products: [
-      {
-        name: "Gourde de luxe",
-        quantity: 2,
-        price: 20,
-      },
-      {
-        name: "Coco",
-        quantity: 1,
-        price: 12,
-      },
-    ],
-  });
-  res.json("ok");
-});
-app.post("/test/bill", BillController.post);
-
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server is running on port " + process.env.PORT);
 });
 
 setInterval(() => {
   InventoryController.removeExpired();
-}, 15 * 60 * 1000);
+}, 5 * 1000);
