@@ -1,0 +1,35 @@
+version: '3.6'
+
+services:
+  db:
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "payment"
+      POSTGRES_USER: "payment"
+      POSTGRES_DB: "payment"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  monolith:
+    image: node:alpine
+    volumes:
+      - ./monolith:/app
+    working_dir: /app
+    environment:
+      - DATABASE_URL=postgres://root:password@db:5432/payment
+      - PORT=3000
+      - JWT_SECRET=s3cr3t
+      - NODE_ENV=dev
+    ports:
+      - "3000:3000"
+    command: "sh -c 'npm install; npm run start'"
+
+volumes:
+  db-data: {}
+
+networks:
+  payment:
+    # Use a custom driver
+    driver: bridge
