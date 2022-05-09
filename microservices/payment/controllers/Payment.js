@@ -1,8 +1,8 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const amqp = require('amqplib/callback_api');
 const { Payment, Notification, OrderProduct, Order } = require("../models");
 const format = require("../lib/error").formatError;
 const Sequelize = require("sequelize");
-const BillController = require("./Bill");
 
 const findOrderById = async function (id, res) {
   const order = await Order.findOne({
@@ -100,15 +100,25 @@ module.exports = {
       case "charge.succeeded":
         const payment = await setPaymentStatus(event, "SUCCEEDED");
         console.log(payment);
-        // USE rabbit MQ to create a channel
-        await BillController.post(
-          {
-            body: {
-              orderId: payment.OrderId,
-            },
-          },
-          { json: () => {}, status: () => ({ json: () => {} }) }
-        );
+        amqp.connect('amqp://localhost', function(error0, connection) {
+        if (error0) {
+            throw error0;
+        }
+        connection.createChannel(function(error1, channel) {
+            if (error1) {
+                throw error1;
+            }
+            const queue = 'create-bill';
+            const msg = 'Create Bill';
+
+            channel.assertQueue(queue, {
+            durable: false
+            });
+
+            channel.sendToQueue(queue, Buffer.from(msg));
+            console.log(" Payment Sent %s", msg);
+        });
+        });
         break;
       case "payment_intent.canceled":
         await setPaymentStatus(event, "FAILED");
