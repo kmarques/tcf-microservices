@@ -1,6 +1,17 @@
 # @tokenUser=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJiYXdAdGVzdC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTY1MTQ5MzQwMSwiZXhwIjoxNjUxNTc5ODAxfQ.HMi_KUOp16DmThBUXvmIWpcNlE2O_aI4fvGBz74-Hrg
 # @tokenAdmin=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY1MTQ5MzQzOSwiZXhwIjoxNjUxNTc5ODM5fQ.ilBsEZpaSXjwmgJFgVzW3jcMgsxGb63--A2JriTyh9o
 
+
+# ----- PRODUCTS -----
+
+### GET a product
+GET http://localhost:3000/products/1
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4MDYyMiwiZXhwIjoxNjUxNTY3MDIyfQ.nQa2qLMPLhYQQpEFsfRHND_CzgFPaZBhST4JiPe7AKQ
+
+### GET all product
+GET http://localhost:3000/products/
+# Authorization: Bearer {{tokenAdmin}}
+
 ### Post product
 POST http://localhost:3000/products/
 # Authorization: Bearer {{tokenAdmin}}
@@ -16,30 +27,82 @@ Content-Type: application/json
   "imageUrl": "test"
 }
 
-### GET a product
-GET http://localhost:3000/products/2
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4MDYyMiwiZXhwIjoxNjUxNTY3MDIyfQ.nQa2qLMPLhYQQpEFsfRHND_CzgFPaZBhST4JiPe7AKQ
-
-### GET all product
-GET http://localhost:3000/products/
-# Authorization: Bearer {{tokenAdmin}}
-
 ### Delete a product with a DELETE request
-DELETE http://localhost:3000/products/10
+DELETE http://localhost:3000/products/1
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4MDYyMiwiZXhwIjoxNjUxNTY3MDIyfQ.nQa2qLMPLhYQQpEFsfRHND_CzgFPaZBhST4JiPe7AKQ
 
-# Create Author Categories Editors
-### Post test product
-POST http://localhost:3000/test/products/
+
+
+# ---- CATEGORIES -----
+
+### GET all categories
+GET http://localhost:3000/categories/
+# Authorization: Bearer {{tokenAdmin}}
 
 ### Get catogories
 GET http://localhost:3000/categories
 
 ### Post category
-POST http://localhost:3000/categories/
-
+POST http://localhost:3000/categories
 Content-Type: application/json
 
 {
-  "name": "BLA",
+  "name": "Categorie2"
 }
+
+
+### Delete a product with a DELETE request
+DELETE http://localhost:3000/categories/2
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4MDYyMiwiZXhwIjoxNjUxNTY3MDIyfQ.nQa2qLMPLhYQQpEFsfRHND_CzgFPaZBhST4JiPe7AKQ
+
+
+
+# ---- EDITORS ----
+
+### Get editors
+GET http://localhost:3000/editors
+
+### GET all editors
+GET http://localhost:3000/editors/
+# Authorization: Bearer {{tokenAdmin}}
+
+### Post editors
+POST http://localhost:3000/editors/
+# Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "name": "Bayard"
+
+}
+
+### Delete a product with a DELETE request
+DELETE http://localhost:3000/editors/2
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4MDYyMiwiZXhwIjoxNjUxNTY3MDIyfQ.nQa2qLMPLhYQQpEFsfRHND_CzgFPaZBhST4JiPe7AKQ
+
+
+
+# ---- AUTHORS ----
+
+### Get authors
+GET http://localhost:3000/authors
+
+### GET all authors
+GET http://localhost:3000/authors/
+# Authorization: Bearer {{tokenAdmin}}
+
+### Post authors
+POST http://localhost:3000/authors/
+# Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "name": "Arthur", 
+  "biography": "lorem ipsum",
+  "imageUrl": "url"
+
+}
+
+### Delete a product with a DELETE request
+DELETE http://localhost:3000/authors/4
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4MDYyMiwiZXhwIjoxNjUxNTY3MDIyfQ.nQa2qLMPLhYQQpEFsfRHND_CzgFPaZBhST4JiPe7AKQ
