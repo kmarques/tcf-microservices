@@ -10,12 +10,13 @@ Role.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       unique: true,
+      primaryKey: true,
     },
     role: {
       type: DataTypes.STRING,
-      validate: {isIn: [Object.values(roles)]},
-      allowNull: false
-    }
+      validate: { isIn: [Object.values(roles)] },
+      allowNull: false,
+    },
   },
   { sequelize, modelName: "Role" }
 );

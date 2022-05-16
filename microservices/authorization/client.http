@@ -1,14 +1,14 @@
-@id = 1
+@id = 3
 
 ### IAM
 ### Create an iam 
 POST http://localhost:3000/iam
 Content-Type: application/json
-X-User-Id: 1
+X-User-Id: 2
 
 {
-  "resourceType" : "test",
-  "resourceId" : 1,
+  "resourceType" : "baw",
+  "resourceId" : 2,
   "acl": 2
 }
 
@@ -26,7 +26,7 @@ PUT http://localhost:3000/iam/{{id}}
 Content-Type: application/json
 
 {
-  "acl" : 2
+  "acl" : 1
 }
 
 
@@ -34,7 +34,7 @@ Content-Type: application/json
 ### Create a role 
 POST http://localhost:3000/role
 Content-Type: application/json
-X-User-Id: 1
+X-User-Id: 2
 
 {
   "role" : "admin"
@@ -54,17 +54,17 @@ PUT http://localhost:3000/role/{{id}}
 Content-Type: application/json
 
 {
-  "role": "user"
+  "role": "admin"
 }
 
 ### Check
 ### Check acl
-POST http://localhost:3000/check
+POST http://localhost:3000/
 Content-Type: application/json
 X-User-Id: {{id}}
 X-User-Role: admin
 
 {
   "method": "POST",
-  "originUrl": "/test/1"
+  "originUrl": "/baw/1"
 }

@@ -24,7 +24,16 @@ IAM.init(
       allowNull: false,
     },
   },
-  { sequelize, modelName: "IAM" }
+  {
+    sequelize,
+    modelName: "IAM",
+    indexes: [
+      {
+        unique: true,
+        fields: ["userId", "resourceType", "resourceId"],
+      },
+    ],
+  }
 );
 
 module.exports = IAM;

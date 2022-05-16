@@ -1,10 +1,9 @@
-const { User, IAM, sequelize } = require("../models");
-const { WRITE } = require("../lib/addIAM").constants;
+const { User } = require("../models");
 const Sequelize = require("sequelize");
 const format = require("../lib/error").formatError;
+
 module.exports = {
   cget: async (req, res) => {
-    console.log("Get user collections");
     try {
       const users = await User.findAll({ where: req.query });
       res.json(users);
@@ -14,22 +13,10 @@ module.exports = {
   },
 
   post: async (req, res) => {
-    const t = await sequelize.transaction();
     try {
-      const user = await User.create(req.body, { transaction: t });
-      await IAM.create(
-        {
-          resourceType: "users",
-          resourceId: user.id,
-          UserId: user.id,
-          acl: WRITE,
-        },
-        { transaction: t }
-      );
-      await t.commit();
+      const user = await User.create(req.body);
       res.status(201).json(user);
     } catch (err) {
-      await t.rollback();
       if (err instanceof Sequelize.ValidationError) {
         res.status(400).json(format(err));
       } else {
