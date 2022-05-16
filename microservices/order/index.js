@@ -3,34 +3,16 @@ const dotenv = require("dotenv");
 
 const express = require("express");
 const app = express();
-let amqp = require("amqplib/callback_api");
+let startChannel = require("./lib/amqp");
 const Order = require("./controllers/Order");
 
-amqp.connect(
-	"amqp://myuser:mypassword@rabbitmq",
-	function (error0, connection) {
-		if (error0) {
-			throw error0;
-		}
-		connection.createChannel(function (error1, channel) {
-			if (error1) {
-				throw error1;
-			}
-			var queue = "hello";
-			var msg = "Hello world";
-
-			channel.assertQueue(queue, {
-				durable: false
-			});
-
-			channel.consume(queue, Order.update);
-		});
-		// setTimeout(function () {
-		// 	connection.close();
-		// 	process.exit(0);
-		// }, 500);
-	}
-);
+startChannel().then(channel => {
+	var queue = "create-order";
+	
+	channel.assertQueue(queue, {
+		durable: false
+	});
+});
 
 app.use(
 	express.json({

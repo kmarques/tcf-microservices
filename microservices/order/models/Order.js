@@ -15,7 +15,6 @@ Order.init(
 		},
 		status: {
 			type: DataTypes.STRING,
-			allowNull: false,
 			defaultValue: "created"
 		},
 		firstname: {

@@ -1,6 +1,7 @@
 const { Order, Product } = require("../models");
 const Sequelize = require("sequelize");
-let amqp = require("amqplib/callback_api");
+const startChannel = require("../lib/amqp");
+
 
 const calculateOrderAmount = async order => {
 	return order.OrderProducts.reduce((acc, item) => {
@@ -22,29 +23,23 @@ module.exports = {
 	post: async (req, res) => {
 		try {
 			const userId = req.headers["X-User-Id"];
-			const { shippingAddress, firstname, lastname, email } = req.body;
+			const { shippingAddress, firstname, lastname, email, products } = req.body;
 
 			const order = await Order.create({
-				UserId: userId
+				userId,
+				shippingAddress,
+				firstname,
+				lastname,
+				email,
 			});
 
-			const products = await Product.findAll({
-				where: {
-					id: {
-						[Sequelize.Op.in]: req.body.cart.map(item => item.productId)
-					}
-				}
-			});
-			// console.log("ODRER ID", order.id);
 			for (const cartItem of req.body.cart) {
-				// item.productId, item.quantity,
-				// const product = await Product.findByPk(cartItem.productId);
 				const product = products.find(t => t.id == cartItem.productId);
 
 				await OrderProduct.create({
 					quantity: cartItem.quantity,
 					unitPrice: product.price,
-					ProductId: product.id,
+					productId: product.id,
 					OrderId: order.id
 				});
 			}
@@ -89,35 +84,17 @@ module.exports = {
 				]
 			});
 
-			amqp.connect(
-				"amqp://myuser:mypassword@rabbitmq",
-				function (error0, connection) {
-					if (error0) {
-						throw error0;
-					}
-					connection.createChannel(function (error1, channel) {
-						if (error1) {
-							throw error1;
-						}
-						const queue = "create-bill";
 
-						channel.assertQueue(queue, {
-							durable: false
-						});
+			const channel = await startChannel();
+			channel.assertQueue(queue, {
+				durable: false
+			});
 
-						const message = Buffer.from(JSON.stringify(order));
+			const message = Buffer.from(JSON.stringify(order));
 
-						channel.sendToQueue(queue, message);
-						console.log(" [x] Sent %s", message.toString());
+			channel.sendToQueue(queue, message);
+			console.log(" [x] Sent %s", message.toString());
 
-						// channel.consume(queue, Order.update);
-					});
-					// setTimeout(function () {
-					// 	connection.close();
-					// 	process.exit(0);
-					// }, 500);
-				}
-			);
 		} catch (err) {
 			res.status(500).json({ message: err.message });
 		}

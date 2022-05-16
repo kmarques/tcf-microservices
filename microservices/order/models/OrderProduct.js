@@ -5,6 +5,10 @@ class OrderProduct extends Model {}
 
 OrderProduct.init(
 	{
+		productId: {
+			type: DataTypes.INTEGER,
+			allowNull: false
+		},
 		quantity: {
 			type: DataTypes.INTEGER,
 			allowNull: false
