@@ -1,20 +1,25 @@
 {
-  "name": "monolith",
+  "name": "authentication",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/jest": "^27.5.1",
+    "@types/supertest": "^2.0.12",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "jest": "^28.1.0",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.3",
-    "sequelize": "^6.18.0"
+    "sequelize": "^6.18.0",
+    "supertest": "^6.2.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

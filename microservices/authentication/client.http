@@ -1,12 +1,12 @@
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNjUyNzA4NDA1LCJleHAiOjE2NTI3OTQ4MDV9.Y0Ykna6iE2-BVFXKKUiLz0XrL58svOtVpXxGAYzAHI4
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJiaUBiaS5jb20iLCJpYXQiOjE2NTI3MTc0MTEsImV4cCI6MTY1MjgwMzgxMX0.PAe8MqMFIdZs5M4KSjKVaIXYLKVvJwCvybzMfZWihsk
 
 ### Login
 POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-  "email": "test@test.com",
-  "password": "test"
+  "email": "bi@bi.com",
+  "password": "bi"
 }
 
 ### Register
@@ -14,10 +14,10 @@ POST http://localhost:3000/register
 Content-Type: application/json
 
 {
-  "lastname": "test",
-  "firstname": "test",
-  "email": "test@test.com",
-  "password": "test"
+  "lastname": "gui",
+  "firstname": "gui",
+  "email": "gui@gui.com",
+  "password": "gui"
 }
 
 ### Verify Bearer token
