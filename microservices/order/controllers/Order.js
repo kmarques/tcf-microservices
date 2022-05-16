@@ -1,5 +1,6 @@
 const { Order, Product } = require("../models");
 const Sequelize = require("sequelize");
+let amqp = require("amqplib/callback_api");
 
 const calculateOrderAmount = async order => {
 	return order.OrderProducts.reduce((acc, item) => {
@@ -21,10 +22,10 @@ module.exports = {
 	post: async (req, res) => {
 		try {
 			const userId = req.headers["X-User-Id"];
-			const { shippingAddress } = req.body;
+			const { shippingAddress, firstname, lastname, email } = req.body;
+
 			const order = await Order.create({
-				UserId: userId,
-				shippingAddress
+				UserId: userId
 			});
 
 			const products = await Product.findAll({
@@ -39,19 +40,7 @@ module.exports = {
 				// item.productId, item.quantity,
 				// const product = await Product.findByPk(cartItem.productId);
 				const product = products.find(t => t.id == cartItem.productId);
-				if (!product) {
-					throw new Sequelize.ValidationError("Product not found", [
-						new Sequelize.ValidationErrorItem(
-							`Product ${cartItem.productId} not found`,
-							"cart",
-							cartItem.productId,
-							null,
-							null,
-							null,
-							null
-						)
-					]);
-				}
+
 				await OrderProduct.create({
 					quantity: cartItem.quantity,
 					unitPrice: product.price,
@@ -59,6 +48,7 @@ module.exports = {
 					OrderId: order.id
 				});
 			}
+
 			res.status(201).json(order);
 		} catch (err) {
 			if (err instanceof Sequelize.ValidationError) {
@@ -71,30 +61,67 @@ module.exports = {
 
 	get: async (req, res) => {
 		try {
-			const order = await Order.findByPk(req.params.id);
+			const order = await Order.findByPk(req.params.id, {
+				include: [
+					{
+						model: OrderProduct
+					}
+				]
+			});
 			res.json({
 				...order,
-				total: calculateOrderAmount(order),
-				orderId: order.id
+				total: calculateOrderAmount(order)
 			});
 		} catch (err) {
 			res.status(500).json({ message: err.message });
 		}
-	}
+	},
 
-	// put: async (req, res) => {
-	//   try {
-	//     const order = await Order.findByPk(req.params.id);
-	//     await order.update(req.body);
-	//     res.json(order);
-	//   } catch (err) {
-	//     if (err instanceof Sequelize.ValidationError) {
-	//       res.status(400).json(format(err));
-	//     } else {
-	//       res.status(500).json({ message: err.message });
-	//     }
-	//   }
-	// },
+	update: async message => {
+		message = JSON.parse(message.content.toString());
+
+		try {
+			const order = await Order.findByPk(message.orderId, {
+				include: [
+					{
+						model: OrderProduct
+					}
+				]
+			});
+
+			amqp.connect(
+				"amqp://myuser:mypassword@rabbitmq",
+				function (error0, connection) {
+					if (error0) {
+						throw error0;
+					}
+					connection.createChannel(function (error1, channel) {
+						if (error1) {
+							throw error1;
+						}
+						const queue = "create-bill";
+
+						channel.assertQueue(queue, {
+							durable: false
+						});
+
+						const message = Buffer.from(JSON.stringify(order));
+
+						channel.sendToQueue(queue, message);
+						console.log(" [x] Sent %s", message.toString());
+
+						// channel.consume(queue, Order.update);
+					});
+					// setTimeout(function () {
+					// 	connection.close();
+					// 	process.exit(0);
+					// }, 500);
+				}
+			);
+		} catch (err) {
+			res.status(500).json({ message: err.message });
+		}
+	}
 
 	// delete: async (req, res) => {
 	//   try {

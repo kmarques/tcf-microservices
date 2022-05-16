@@ -1,24 +1,20 @@
 {
-  "name": "monolith",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "nodemon index.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "dotenv": "^16.0.0",
-    "easyinvoice": "^2.3.0",
-    "express": "^4.17.3",
-    "jsonwebtoken": "^8.5.1",
-    "pg": "^8.7.3",
-    "sequelize": "^6.18.0",
-    "stripe": "^8.219.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.15"
-  }
+	"name": "monolith",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "nodemon index.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"dotenv": "^16.0.0",
+		"express": "^4.17.3",
+		"pg": "^8.7.3",
+		"sequelize": "^6.18.0"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.15"
+	}
 }

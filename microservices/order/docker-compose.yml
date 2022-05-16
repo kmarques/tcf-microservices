@@ -1,6 +1,16 @@
 version: "3.6"
 
 services:
+ rabbitmq:
+  image: rabbitmq:3.8-management-alpine
+  environment:
+   - RABBITMQ_DEFAULT_USER=myuser
+   - RABBITMQ_DEFAULT_PASS=mypassword
+  ports:
+   # AMQP protocol port
+   - "5672:5672"
+   # HTTP management UI
+   - "15672:15672"
  db:
   image: postgres:alpine
   ports:
@@ -8,7 +18,7 @@ services:
   environment:
    POSTGRES_PASSWORD: "password"
    POSTGRES_USER: "root"
-   POSTGRES_DB: "order"
+   POSTGRES_DB: "bill"
   volumes:
    - db-data:/var/lib/postgresql/data
 

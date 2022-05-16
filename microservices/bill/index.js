@@ -4,10 +4,10 @@ const dotenv = require("dotenv");
 const express = require("express");
 const app = express();
 let amqp = require("amqplib/callback_api");
-const Order = require("./controllers/Order");
+const Bill = require("./controllers/Bill");
 
 amqp.connect(
-	"amqp://myuser:mypassword@rabbitmq",
+	"amqp://myuser2:mypassword2@rabbitmq2",
 	function (error0, connection) {
 		if (error0) {
 			throw error0;
@@ -23,7 +23,7 @@ amqp.connect(
 				durable: false
 			});
 
-			channel.consume(queue, Order.update);
+			channel.consume(queue, Bill.post);
 		});
 		// setTimeout(function () {
 		// 	connection.close();

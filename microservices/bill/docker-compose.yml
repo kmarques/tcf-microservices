@@ -1,6 +1,16 @@
 version: "3.6"
 
 services:
+ rabbitmq:
+  image: rabbitmq:3.8-management-alpine
+  environment:
+   - RABBITMQ_DEFAULT_USER=myuser
+   - RABBITMQ_DEFAULT_PASS=mypassword
+  ports:
+   # AMQP protocol port
+   - "5672:5672"
+   # HTTP management UI
+   - "15672:15672"
  db:
   image: postgres:alpine
   ports:
@@ -8,20 +18,23 @@ services:
   environment:
    POSTGRES_PASSWORD: "password"
    POSTGRES_USER: "root"
-   POSTGRES_DB: "monolith"
+   POSTGRES_DB: "bill"
   volumes:
    - db-data:/var/lib/postgresql/data
 
- monolith:
+ bill:
   image: node:alpine
   volumes:
-   - ./monolith:/app
+   - ./:/app
   working_dir: /app
+  depends_on:
+   - db
+   - rabbitmq
   environment:
-   - DATABASE_URL=postgres://root:password@db:5432/monolith
+   - DATABASE_URL=postgres://root:password@db:5432/bill
    - PORT=3000
-   - JWT_SECRET=s3cr3t
    - NODE_ENV=dev
+
   ports:
    - "3000:3000"
   command: "sh -c 'npm install; npm run start'"
