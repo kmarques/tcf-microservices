@@ -23,8 +23,8 @@ services:
       - JWT_SECRET=s3cr3t
       - NODE_ENV=dev
     ports:
-      - "3000:3000"
-    command: "sh -c 'npm install; npm run start'"
+      - "4000:3000"
+    command: "sh -c 'npm install; DEBUG=express:* npm run start'"
 
 volumes:
   db-data: {}

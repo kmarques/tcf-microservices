@@ -9,7 +9,7 @@ Inventory.init(
      allowNull:true,
      type: DataTypes.INTEGER,
     },
-    productId:{
+    ProductId:{
       allowNull:false,
       type: DataTypes.INTEGER,
     },
