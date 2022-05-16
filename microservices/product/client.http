@@ -10,14 +10,14 @@ Content-Type: application/json
   "name": "test",
   "authors": [1],
   "EditorId": 1,
-  "price": 9.990,
+  "price": 999,
   "description": "A",
   "CategoryId": 1,
   "imageUrl": "test"
 }
 
 ### GET a product
-GET http://localhost:3000/products/12
+GET http://localhost:3000/products/2
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4MDYyMiwiZXhwIjoxNjUxNTY3MDIyfQ.nQa2qLMPLhYQQpEFsfRHND_CzgFPaZBhST4JiPe7AKQ
 
 ### GET all product
@@ -41,5 +41,5 @@ POST http://localhost:3000/categories/
 Content-Type: application/json
 
 {
-  "name": "test",
+  "name": "BLA",
 }
