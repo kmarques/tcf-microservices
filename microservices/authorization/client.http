@@ -1,0 +1,70 @@
+@id = 3
+
+### IAM
+### Create an iam 
+POST http://localhost:3000/iam
+Content-Type: application/json
+X-User-Id: 2
+
+{
+  "resourceType" : "baw",
+  "resourceId" : 2,
+  "acl": 2
+}
+
+### Get an iam
+GET http://localhost:3000/iam/{{id}}
+Content-Type: application/json
+
+
+### Delete an iam
+DELETE http://localhost:3000/iam/{{id}}
+Content-Type: application/json
+
+### Update an iam
+PUT http://localhost:3000/iam/{{id}}
+Content-Type: application/json
+
+{
+  "acl" : 1
+}
+
+
+### Role
+### Create a role 
+POST http://localhost:3000/role
+Content-Type: application/json
+X-User-Id: 2
+
+{
+  "role" : "admin"
+}
+
+### Get a role
+GET http://localhost:3000/role/{{id}}
+Content-Type: application/json
+
+
+### Delete a role
+DELETE http://localhost:3000/role/{{id}}
+Content-Type: application/json
+
+### Update a role
+PUT http://localhost:3000/role/{{id}}
+Content-Type: application/json
+
+{
+  "role": "admin"
+}
+
+### Check
+### Check acl
+POST http://localhost:3000/
+Content-Type: application/json
+X-User-Id: {{id}}
+X-User-Role: admin
+
+{
+  "method": "POST",
+  "originUrl": "/baw/1"
+}
