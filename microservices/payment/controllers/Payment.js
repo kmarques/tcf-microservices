@@ -5,15 +5,14 @@ const format = require("../lib/error").formatError;
 const Sequelize = require("sequelize");
 
 const setPaymentStatus = async (event, status) => {
-  console.log("PAYMENTID: ", event.data.object)
-  // const payment = await Payment.findOne({
-  //   where: {
-  //    id: event.data.object.metadata.payment_id,
-  //   },
-  // });
-  // payment.status = status;
-  // await payment.save();
-  // return payment;
+  const payment = await Payment.findOne({
+    where: {
+      paymentIntentId: event.data.object.payment_intent,
+    },
+  });
+  payment.status = status;
+  await payment.save();
+  return payment;
 };
 
 module.exports = {
@@ -32,7 +31,7 @@ module.exports = {
           enabled: true,
         },
         metadata: {
-          order_id: id,
+          order_id: orderId,
           payment_id: payment.id,
         },
       });
@@ -54,21 +53,26 @@ module.exports = {
     }
   },
   handleEvent: async (req, res) => {
-    const sig = req.headers["stripe-signature"];
     let event;
+    const sig = req.headers["stripe-signature"];
 
-    try {
-      event = stripe.webhooks.constructEvent(
-        req.rawBody,
-        sig,
-        process.env.WEBHOOK_SECRET
-      );
-      const notification = await Notification.create({ body: event });
-      await notification.save();
-    } catch (err) {
-      res.status(400).send(`Webhook Error: ${err.message}`);
-      console.log(err.message);
-      return;
+    if(process.env.NODE_ENV === "dev") {
+      event = req.body
+    } else if(process.env.NODE_ENV === "production") {
+      try {
+        event = stripe.webhooks.constructEvent(
+          req.rawBody,
+          sig,
+          process.env.WEBHOOK_SECRET
+        );
+  
+        const notification = await Notification.create({ body: event });
+        await notification.save();
+      } catch (err) {
+        res.status(400).send(`Webhook Error: ${err.message}`);
+        console.log(err.message);
+        return;
+      }
     }
 
     switch (event.type) {
@@ -76,25 +80,30 @@ module.exports = {
         await setPaymentStatus(event, "PROCESSING");
         break;
       case "charge.succeeded":
-        const payment = await setPaymentStatus(event, "SUCCEEDED");
+        await setPaymentStatus(event, "SUCCEEDED");
         amqp.connect(`${process.env.RABBITMQ_URL}`, function(error0, connection) {
-        if (error0) {
-            throw error0;
-        }
-        connection.createChannel(function(error1, channel) {
-            if (error1) {
-                throw error1;
-            }
-            const queue = 'create-bill';
-            const msg = 'Create bill';
+          if (error0) {
+              throw error0;
+          }
+          connection.createChannel(function(error1, channel) {
+              if (error1) {
+                  throw error1;
+              }
+              const queue = 'update-order';
+              const msg = 'Update order';
 
-            channel.assertQueue(queue, {
-            durable: false
-            });
+              channel.assertQueue(queue, {
+              durable: true
+              });
 
-            channel.sendToQueue(queue, Buffer.from(msg));
-            console.log(" Payment Sent %s", msg);
-        });
+              const message = Buffer.from(JSON.stringify({
+                order_id: event.data.object.metadata.order_id,
+                status: 'PAID'
+              }));
+
+              channel.sendToQueue(queue, message);
+              console.log("%s", msg);
+          });
         });
         break;
       case "payment_intent.canceled":
