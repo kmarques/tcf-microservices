@@ -6,6 +6,10 @@ const sequelize = require("../lib/db");
 Payment.hasMany(Notification);
 Notification.belongsTo(Payment);
 
+sequelize.sync({ alter: true }).then(() => {
+    console.log("Database & tables created!");
+});
+
 module.exports = {
     Payment,
     Notification,

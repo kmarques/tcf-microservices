@@ -1,54 +1,32 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const amqp = require('amqplib/callback_api');
-const { Payment, Notification, OrderProduct, Order } = require("../models");
+const { Payment, Notification } = require("../models");
 const format = require("../lib/error").formatError;
 const Sequelize = require("sequelize");
 
-const findOrderById = async function (id, res) {
-  const order = await Order.findOne({
-    where: {
-      id,
-    },
-    include: [OrderProduct],
-  });
-  if (order === null) {
-    throw new Sequelize.ValidationError("Order not found", [
-      new Sequelize.ValidationErrorItem(
-        `Order ${id} not found`,
-        "id",
-        id,
-        null,
-        null,
-        null,
-        null
-      ),
-    ]);
-  }
-  return order;
-};
-
 const setPaymentStatus = async (event, status) => {
-  const payment = await Payment.findOne({
-    //where: {
-    //  id: event.data.object.metadata.payment_id,
-    //},
-  });
-  payment.status = status;
-  await payment.save();
-  return payment;
+  console.log("PAYMENTID: ", event.data.object)
+  // const payment = await Payment.findOne({
+  //   where: {
+  //    id: event.data.object.metadata.payment_id,
+  //   },
+  // });
+  // payment.status = status;
+  // await payment.save();
+  // return payment;
 };
 
 module.exports = {
   createPaymentIntent: async (req, res) => {
-    const { id } = req.body;
+    const { orderId, total } = req.body;
 
     try {
       const payment = await Payment.create({
         status: "CREATED",
-        OrderId: id,
+        orderId,
       });
       const paymentIntent = await stripe.paymentIntents.create({
-        amount: req.body.amount,
+        amount: total,
         currency: "eur",
         automatic_payment_methods: {
           enabled: true,
@@ -99,8 +77,7 @@ module.exports = {
         break;
       case "charge.succeeded":
         const payment = await setPaymentStatus(event, "SUCCEEDED");
-        console.log(payment);
-        amqp.connect('amqp://localhost', function(error0, connection) {
+        amqp.connect(`${process.env.RABBITMQ_URL}`, function(error0, connection) {
         if (error0) {
             throw error0;
         }
@@ -109,7 +86,7 @@ module.exports = {
                 throw error1;
             }
             const queue = 'create-bill';
-            const msg = 'Create Bill';
+            const msg = 'Create bill';
 
             channel.assertQueue(queue, {
             durable: false

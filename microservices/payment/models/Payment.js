@@ -9,6 +9,10 @@ Payment.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    orderId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
     paymentIntentId: DataTypes.STRING,
   },
   { sequelize, modelName: "Payment" }
