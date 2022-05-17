@@ -1,8 +1,8 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-const amqp = require('amqplib/callback_api');
 const { Payment, Notification } = require("../models");
 const format = require("../lib/error").formatError;
 const Sequelize = require("sequelize");
+const amqp = require('../lib/amqp')
 
 const setPaymentStatus = async (event, status) => {
   const payment = await Payment.findOne({
@@ -81,30 +81,19 @@ module.exports = {
         break;
       case "charge.succeeded":
         await setPaymentStatus(event, "SUCCEEDED");
-        amqp.connect(`${process.env.RABBITMQ_URL}`, function(error0, connection) {
-          if (error0) {
-              throw error0;
-          }
-          connection.createChannel(function(error1, channel) {
-              if (error1) {
-                  throw error1;
-              }
-              const queue = 'update-order';
-              const msg = 'Update order';
+        const channel = await amqp()
+        const queue = 'update-order';
 
-              channel.assertQueue(queue, {
-              durable: true
-              });
-
-              const message = Buffer.from(JSON.stringify({
-                order_id: event.data.object.metadata.order_id,
-                status: 'PAID'
-              }));
-
-              channel.sendToQueue(queue, message);
-              console.log("%s", msg);
-          });
+        await channel.assertQueue(queue, {
+        durable: true
         });
+
+        const message = Buffer.from(JSON.stringify({
+          order_id: event.data.object.metadata.order_id,
+          status: 'PAID'
+        }));
+
+        await channel.sendToQueue(queue, message)
         break;
       case "payment_intent.canceled":
         await setPaymentStatus(event, "FAILED");
