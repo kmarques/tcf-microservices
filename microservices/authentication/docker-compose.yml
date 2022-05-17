@@ -14,6 +14,8 @@ services:
 
     authentication:
       image: node:alpine
+      depends_on:
+        - authentication-db
       volumes:
         - ./:/app
       working_dir: /app
