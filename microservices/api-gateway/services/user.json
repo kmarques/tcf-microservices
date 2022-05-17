@@ -1,0 +1,29 @@
+{
+  "baseUrl": "/users",
+  "endpoint": "AUTHENTICATION_URL",
+  "keepBaseUrl": true,
+  "middlewares": ["verifyToken"],
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/",
+      "middlewares": []
+    },
+    {
+      "method": "POST",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/:id"
+    },
+    {
+      "method": "PUT",
+      "path": "/:id"
+    },
+    {
+      "method": "DELETE",
+      "path": "/:id"
+    }
+  ]
+}

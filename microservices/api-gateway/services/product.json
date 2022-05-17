@@ -1,0 +1,26 @@
+{
+  "baseUrl": "/products",
+  "endpoint": "PRODUCT_URL",
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "POST",
+      "path": "/"
+    },
+    {
+      "method": "GET",
+      "path": "/:id"
+    },
+    {
+      "method": "PUT",
+      "path": "/:id"
+    },
+    {
+      "method": "DELETE",
+      "path": "/:id"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "baseUrl": "",
+  "endpoint": "INVENTORY_URL",
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/stock_events"
+    },
+    {
+      "method": "POST",
+      "path": "/stock_events",
+      "middlewares": ["verifyToken"]
+    },
+    {
+      "method": "DELETE",
+      "path": "/stock_events",
+      "middlewares": ["verifyToken"]
+    },
+    {
+      "method": "GET",
+      "path": "/products/:id/stock",
+      "middlewares": ["checkResource"]
+    }
+  ]
+}

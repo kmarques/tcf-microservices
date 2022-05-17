@@ -1,0 +1,32 @@
+{
+  "baseUrl": "/orders",
+  "keepBaseUrl": true,
+  "endpoint": "ORDER_URL",
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/",
+      "middlewares": ["verifyToken"]
+    },
+    {
+      "method": "POST",
+      "path": "/",
+      "middlewares": ["verifyToken"]
+    },
+    {
+      "method": "GET",
+      "path": "/:id",
+      "middlewares": ["verifyToken"]
+    },
+    {
+      "method": "PUT",
+      "path": "/:id",
+      "middlewares": ["verifyToken"]
+    },
+    {
+      "method": "DELETE",
+      "path": "/:id",
+      "middlewares": ["verifyToken"]
+    }
+  ]
+}

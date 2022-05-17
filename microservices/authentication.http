@@ -1,0 +1,62 @@
+@tokenUser=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJiYXdAdGVzdC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTY1MTQ5MzQwMSwiZXhwIjoxNjUxNTc5ODAxfQ.HMi_KUOp16DmThBUXvmIWpcNlE2O_aI4fvGBz74-Hrg
+@tokenAdmin=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoiYWRtaW5AdGVzdC5jb20iLCJpYXQiOjE2NTI4MDEyMTAsImV4cCI6MTY1Mjg4NzYxMH0.F9oVroICJOjSa6YmP2Znbji7PRSC2nBx0Y1pTHawCEs
+
+### Login
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "admin@test.com",
+  "password": "admin"
+}
+
+### Register
+POST http://localhost:3000/register
+Content-Type: application/json
+
+{
+  "lastname": "test",
+  "firstname": "test",
+  "role": "admin",
+  "email": "admin@test.com",
+  "password": "admin"
+}
+### verify token
+GET http://localhost:3000/test
+Content-Type: application/json
+Authorization: Bearer {{tokenAdmin}}
+
+### GET all users
+GET http://localhost:3000/users
+// use token variable
+Authorization: Bearer {{tokenAdmin}}
+
+### Create a user with a POST request using lastname, firstname, email, password
+POST http://localhost:3000/users
+Content-Type: application/json
+Authorization: Bearer {{tokenAdmin}}
+
+{
+  "lastname": "Doe",
+  "firstname": "John",
+  "email": "test2@test.com",
+  "password": "test"
+}
+
+### GET a user
+GET http://localhost:3000/users/1
+Authorization: Bearer {{tokenAdmin}}
+
+### Update a user with a PUT request using lastname, firstname, email, password
+PUT http://localhost:3000/users/1
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "lastname": "Doe",
+  "firstname": "Jane"
+}
+
+### Delete a user with a DELETE request
+DELETE http://localhost:3000/users/3
+Authorization: Bearer {{tokenAdmin}}

@@ -1,0 +1,43 @@
+version: "3.6"
+
+services:
+  gateway:
+    image: node:alpine
+    volumes:
+      - ./api-gateway:/app
+    working_dir: /app
+    environment:
+      - PORT=3000
+      - NODE_ENV=dev
+      - AUTHENTICATION_URL=http://authentication:3000
+    depends_on:
+      - authentication
+    ports:
+      - "3000:3000"
+    command: "sh -c 'npm install; npm run start'"
+
+  authentication-db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_USER: "root"
+      POSTGRES_DB: "authentication"
+    volumes:
+      - authentication-db-data:/var/lib/postgresql/data
+
+  authentication:
+    image: node:alpine
+    volumes:
+      - ./authentication:/app
+    working_dir: /app
+    environment:
+      - DATABASE_URL=postgres://root:password@authentication-db:5432/authentication
+      - PORT=3000
+      - JWT_SECRET=s3cr3t
+      - NODE_ENV=dev
+    depends_on:
+      - authentication-db
+    command: "sh -c 'npm install; npm run start'"
+
+volumes:
+  authentication-db-data: {}

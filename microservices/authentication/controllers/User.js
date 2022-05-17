@@ -50,12 +50,17 @@ module.exports = {
 
   delete: async (req, res) => {
     try {
-      const user = await User.findByPk(req.params.id);
-      await user.destroy();
-      res.status(204).end();
+      const nbDeleted = await User.destroy({
+        where: { id: parseInt(req.params.id, 10) },
+      });
+      if (nbDeleted) {
+        res.status(204).end();
+      } else {
+        res.sendStatus(404);
+      }
     } catch (err) {
+      console.error(err.message);
       res.status(500).json({ message: err.message });
     }
   },
 };
-

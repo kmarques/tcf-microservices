@@ -1,0 +1,30 @@
+{
+  "baseUrl": "/categories",
+  "keepBaseUrl": true,
+  "endpoint": "PRODUCT_URL",
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/"
+    },
+    {
+      "method": "POST",
+      "path": "/",
+      "middlewares": ["verifyToken"]
+    },
+    {
+      "method": "GET",
+      "path": "/:id"
+    },
+    {
+      "method": "PUT",
+      "path": "/:id",
+      "middlewares": ["verifyToken"]
+    },
+    {
+      "method": "DELETE",
+      "path": "/:id",
+      "middlewares": ["verifyToken"]
+    }
+  ]
+}

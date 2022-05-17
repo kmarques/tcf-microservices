@@ -1,0 +1,17 @@
+{
+  "baseUrl": "",
+  "endpoint": "PAYMENT_URL",
+  "routes": [
+    {
+      "method": "POST",
+      "basePath": "/order/:id/payment",
+      "path": "/payment",
+      "middlewares": ["verifyToken", "fetchResource"]
+    },
+    {
+      "method": "POST",
+      "path": "/payment/webhook",
+      "middlewares": ["verifyToken"]
+    }
+  ]
+}
