@@ -1,5 +1,5 @@
 {
-	"name": "monolith",
+	"name": "order",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
@@ -9,8 +9,10 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"amqplib": "^0.8.0",
 		"dotenv": "^16.0.0",
 		"express": "^4.17.3",
+		"node-fetch": "^3.2.4",
 		"pg": "^8.7.3",
 		"sequelize": "^6.18.0"
 	},
