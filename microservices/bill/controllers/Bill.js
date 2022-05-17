@@ -18,13 +18,10 @@ module.exports = {
 		console.log("Post bill");
 		try {
 			// on va recuperer le message succes via stripe et on le renvoie avec un status 200
-			const response = await fetch(
-				"http://localhost:3001/order/" + message.orderId
-			);
-			const order = await response.json();
+			message = JSON.parse(message.content.toString());
 
+			const order = message.order;
 			const user = message.user;
-
 			const orderProducts = order.OrderProducts;
 
 			const bill = await Bill.create({
@@ -41,9 +38,7 @@ module.exports = {
 				orderProducts,
 				user: user.dataValues
 			});
-			console.log(data);
-			res.json(data);
-
+			console.log(bill);
 			// res.status(201).json({ bill, orderProducts });
 		} catch (err) {
 			if (err instanceof Sequelize.ValidationError) {

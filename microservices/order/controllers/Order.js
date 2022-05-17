@@ -23,14 +23,11 @@ module.exports = {
 	post: async (req, res) => {
 		try {
 			const userId = req.headers["X-User-Id"];
-			const { shippingAddress, firstname, lastname, email, products } = req.body;
+			const { shippingAddress, products } = req.body;
 
 			const order = await Order.create({
 				userId,
 				shippingAddress,
-				firstname,
-				lastname,
-				email,
 			});
 
 			for (const cartItem of req.body.cart) {
@@ -76,7 +73,7 @@ module.exports = {
 		message = JSON.parse(message.content.toString());
 
 		try {
-			const order = await Order.findByPk(message.orderId, {
+			const order = await Order.findByPk(message.order_id, {
 				include: [
 					{
 						model: OrderProduct
@@ -84,15 +81,20 @@ module.exports = {
 				]
 			});
 
+			await Order.update("PAID", { id: message.order_id });
+
 
 			const channel = await startChannel();
-			channel.assertQueue(queue, {
+			const queue = "create-bill";
+
+
+			await channel.assertQueue(queue, {
 				durable: false
 			});
 
 			const message = Buffer.from(JSON.stringify(order));
 
-			channel.sendToQueue(queue, message);
+			await channel.sendToQueue(queue, message);
 			console.log(" [x] Sent %s", message.toString());
 
 		} catch (err) {

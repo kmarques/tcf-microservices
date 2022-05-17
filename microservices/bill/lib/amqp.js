@@ -11,7 +11,7 @@ async function start() {
     })
     .then(function (chn) {
       channel = chn;
-      return channel;
+      return chn;
     });
 }
 

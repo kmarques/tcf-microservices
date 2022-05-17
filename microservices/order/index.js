@@ -7,11 +7,13 @@ let startChannel = require("./lib/amqp");
 const Order = require("./controllers/Order");
 
 startChannel().then(channel => {
-	var queue = "create-order";
+	var queue = "update-order";
 	
 	channel.assertQueue(queue, {
 		durable: false
 	});
+
+	channel.consume(queue, Order.update);
 });
 
 app.use(

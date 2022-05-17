@@ -5,32 +5,18 @@ const express = require("express");
 const app = express();
 let amqp = require("amqplib/callback_api");
 const Bill = require("./controllers/Bill");
+const startChannel = require("./lib/amqp");
 
-amqp.connect(
-	"amqp://myuser2:mypassword2@rabbitmq2",
-	function (error0, connection) {
-		if (error0) {
-			throw error0;
-		}
-		connection.createChannel(function (error1, channel) {
-			if (error1) {
-				throw error1;
-			}
-			var queue = "hello";
-			var msg = "Hello world";
+startChannel().then(channel => {
+	var queue = "create-bill";
+	var msg = "Hello world";
 
-			channel.assertQueue(queue, {
-				durable: false
-			});
+	channel.assertQueue(queue, {
+		durable: false
+	});
 
-			channel.consume(queue, Bill.post);
-		});
-		// setTimeout(function () {
-		// 	connection.close();
-		// 	process.exit(0);
-		// }, 500);
-	}
-);
+	channel.consume(queue, Bill.post);
+})
 
 app.use(
 	express.json({

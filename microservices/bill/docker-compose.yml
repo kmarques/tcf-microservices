@@ -34,6 +34,7 @@ services:
    - DATABASE_URL=postgres://root:password@db:5432/bill
    - PORT=3000
    - NODE_ENV=dev
+   - AMQP_HOST=amqp://myuser:mypassword@rabbitmq
 
   ports:
    - "3000:3000"
