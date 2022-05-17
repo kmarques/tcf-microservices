@@ -18,5 +18,12 @@ afterAll(async () => {
 });
 
 describe("User", () => {
-  
+  it("should return all the users", async () => {
+    // Given
+    // When
+    const response = await client.get("/users");
+    // Then
+    expect(response.status).toBe(200);
+    expect(response.body).instanceOf(Array);
+  })
 });
