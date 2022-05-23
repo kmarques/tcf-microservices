@@ -11,9 +11,8 @@ jobs:
           ls ${{ github.workspace }}/microservices
       - name: Run tests if git diff
         run: |
-          if [ git diff --quiet HEAD master -- microservices ]
-          then
-              docker-compose -f ${{ github.workspace }}/microservices/authentication/docker-compose.yml run authentication npm test
+          if [ git diff --quiet HEAD master -- microservices | echo changed ]; then
+            docker-compose -f ${{ github.workspace }}/microservices/authentication/docker-compose.yml run authentication npm test -d --build
           else
-              echo 'No changes to authentication service'
+            echo 'No changes to authentication service'
           fi
