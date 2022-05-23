@@ -6,13 +6,21 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
+        with: 
+          fetch-depth: 0
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}/microservices
+      - name: Build docker-compose
+        run: docker-compose -f ./microservices/authentication/docker-compose.yml up -d
+      - name: NPM Install
+        run: |
+          docker exec authentication_authentication_1 npm install
       - name: Run tests if git diff
         run: |
-          if [ git diff --quiet HEAD master -- microservices | echo changed ]; then
-            docker-compose -f ${{ github.workspace }}/microservices/authentication/docker-compose.yml run authentication npm test -d --build
+          CHANGED=$(git diff --quiet HEAD master -- microservices | echo changed)
+          if [[ $CHANGED ]]; then
+              docker exec authentication_authentication_1 npm test
           else
-            echo 'No changes to authentication service'
+              echo 'No changes to authentication service'
           fi
