@@ -15,11 +15,11 @@
     "express": "^4.17.3",
     "pg": "^8.7.3",
     "sequelize": "^6.18.0",
-    "stripe": "^8.219.0",
-    "supertest": "^6.2.3"
+    "stripe": "^8.219.0"
   },
   "devDependencies": {
     "jest": "^28.1.0",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.3"
   }
 }

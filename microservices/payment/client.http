@@ -1,6 +1,6 @@
 
 ### Create payment intent
-POST http://localhost:3000/payment
+POST http://localhost:3001/payment
 Content-Type: application/json
 
 {
@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 ### WEBHOOK MOCK
-POST http://localhost:3000/payment/webhook
+POST http://localhost:3001/payment/webhook
 Content-Type: application/json
 
 {
