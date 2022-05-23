@@ -25,10 +25,10 @@ describe("User", () => {
     const response = await client.get("/users");
     // Then
     expect(response.status).toBe(200);
-    expect(response.body).toBe([]);
+    expect(response.body).not.toBeNull;
   });
 
-  it("creates a user", async () => {
+  it("should create a user", async () => {
     // Given
     const givenUser = {
       lastname: "testing",
@@ -43,7 +43,7 @@ describe("User", () => {
     expect(response.body.email).toBe(givenUser.email);
   });
 
-  it("updates a user", async () => {
+  it("should update a user", async () => {
     // Given
     const { user } = await userFixture();
     const givenUser = { email: user.email, password: "testing" };

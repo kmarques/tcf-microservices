@@ -7,7 +7,6 @@ const app = express();
 
 app.use(express.json());
 
-console.log("hey");
 app.use("/", require("./routes/Security"));
 app.use("/users", require("./routes/User"));
 
