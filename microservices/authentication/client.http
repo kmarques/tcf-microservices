@@ -1,4 +1,4 @@
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJiaUBiaS5jb20iLCJpYXQiOjE2NTI3MTc0MTEsImV4cCI6MTY1MjgwMzgxMX0.PAe8MqMFIdZs5M4KSjKVaIXYLKVvJwCvybzMfZWihsk
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJiaUBiaS5jb20iLCJpYXQiOjE2NTMzMTE0MTcsImV4cCI6MTY1MzM5NzgxN30.KB-y7FqSTcqALe61HH1YwXLe3y1UsxJUdwzSgd8dc_4
 
 ### Login
 POST http://localhost:3000/login
@@ -45,7 +45,7 @@ GET http://localhost:3000/users/1
 Authorization: Bearer {{token}}
 
 ### Update a user with a PUT request using lastname, firstname, email, password
-PUT http://localhost:3000/users/1
+PUT http://localhost:3000/users/4
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

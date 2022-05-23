@@ -1,14 +1,14 @@
-const {IAM, Role} = require("../models");
+const { IAM, Role } = require("../models");
 const { Op } = require("sequelize");
 const { READ, WRITE } = require("../utils/constants").iamRights;
-
-
 
 module.exports = {
   check: async (req, res) => {
     if (req.headers["x-user-role"]) {
-      const userRole = await Role.findOne({userId: req.headers["x-user-id"]});
-      if (userRole.role !== req.headers["x-user-role"]) {
+      const userRole = await Role.findOne({
+        where: { userId: req.headers["x-user-id"] },
+      });
+      if (!userRole || userRole.role !== req.headers["x-user-role"]) {
         return res.sendStatus(403);
       } else {
         if (req.body.checkACL === false) {
