@@ -1,4 +1,4 @@
-name: GitHub Actions CI
+name: Authentication Service
 on: [push]
 jobs:
   check-changed-services:
@@ -8,19 +8,23 @@ jobs:
         uses: actions/checkout@v3
         with: 
           fetch-depth: 0
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}/microservices
       - name: Build docker-compose
-        run: docker-compose -f ./microservices/authentication/docker-compose.yml up -d
-      - name: NPM Install
+        working-directory: ./microservices/authentication
+        run: docker-compose up -d
+      - name: Clean modules
+        run: |
+          docker exec authentication_authentication_1 rm -rf node_modules package-lock.json
+      - name: Install Dependencies
         run: |
           docker exec authentication_authentication_1 npm install
+      - name: Create database & tables
+        run: |
+          docker exec authentication_authentication_1 node migrate.js
       - name: Run tests if git diff
         run: |
           CHANGED=$(git diff --quiet HEAD master -- microservices | echo changed)
           if [[ $CHANGED ]]; then
-              docker exec authentication_authentication_1 npm test
+              docker exec authentication_authentication_1 npm test --maxWorkers=2
           else
-              echo 'No changes to authentication service'
+              echo 'No changes with master'
           fi
