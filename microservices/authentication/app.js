@@ -5,12 +5,10 @@ const express = require("express");
 const { sequelize } = require("./models");
 const app = express();
 
-app.use(
-  express.json()
-);
+app.use(express.json());
 
+console.log("hey");
 app.use("/", require("./routes/Security"));
 app.use("/users", require("./routes/User"));
 
 module.exports = app;
-

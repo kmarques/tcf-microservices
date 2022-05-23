@@ -1,17 +1,19 @@
-name: GitHub Actions Demo
+name: GitHub Actions CI
 on: [push]
 jobs:
   check-changed-services:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
       - name: List files in the repository
         run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+          ls ${{ github.workspace }}/microservices
+      - name: Run tests if git diff
+        run: |
+          if [ git diff --quiet HEAD master -- microservices ]
+          then
+              docker-compose -f ${{ github.workspace }}/microservices/authentication/docker-compose.yml run authentication npm test
+          else
+              echo 'No changes to authentication service'
+          fi
