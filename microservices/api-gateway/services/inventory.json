@@ -4,7 +4,8 @@
   "routes": [
     {
       "method": "GET",
-      "path": "/stock_events"
+      "path": "/stock_events",
+      "middlewares": ["verifyToken"]
     },
     {
       "method": "POST",
@@ -13,7 +14,7 @@
     },
     {
       "method": "DELETE",
-      "path": "/stock_events",
+      "path": "/stock_events/:id",
       "middlewares": ["verifyToken"]
     },
     {

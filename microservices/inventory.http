@@ -1,0 +1,27 @@
+@tokenUser=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJiYXdAdGVzdC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTY1MTQ5MzQwMSwiZXhwIjoxNjUxNTc5ODAxfQ.HMi_KUOp16DmThBUXvmIWpcNlE2O_aI4fvGBz74-Hrg
+@tokenAdmin=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsImlhdCI6MTY1MzMxMDQ4OCwiZXhwIjoxNjUzMzk2ODg4fQ.vMjJTpGXHQdTZKsjUGXsY72XeUvxNnNqWhHJAs3RWAs
+
+### Get stocks quantity
+GET http://localhost:3000/products/12/stock
+Authorization: Bearer {{tokenUser}}
+
+### Get stocks events
+GET http://localhost:3000/stock_events
+Authorization: Bearer {{tokenAdmin}}
+### Get stocks events
+GET http://localhost:3000/stock_events
+
+### POST stocks events
+POST http://localhost:3000/stock_events
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "typeEvent": "ADD",
+  "quantity": 12,
+  "ProductId": 12
+}
+
+### DELETE stocks events
+DELETE http://localhost:3000/stock_events/1
+Authorization: Bearer {{tokenAdmin}}

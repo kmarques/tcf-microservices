@@ -21,10 +21,6 @@ Author.belongsToMany(Product, {
 Editor.hasMany(Product);
 Product.belongsTo(Editor);
 
-sequelize.sync({ alter: true }).then(() => {
-  console.log("Database & tables created!");
-});
-
 module.exports = {
   sequelize,
   Product,

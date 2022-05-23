@@ -4,14 +4,13 @@
   "routes": [
     {
       "method": "POST",
-      "basePath": "/order/:id/payment",
+      "basePath": "/orders/:id/payment",
       "path": "/payment",
       "middlewares": ["verifyToken", "fetchResource"]
     },
     {
       "method": "POST",
-      "path": "/payment/webhook",
-      "middlewares": ["verifyToken"]
+      "path": "/payment/webhook"
     }
   ]
 }

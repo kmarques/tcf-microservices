@@ -10,8 +10,16 @@ services:
       - PORT=3000
       - NODE_ENV=dev
       - AUTHENTICATION_URL=http://authentication:3000
+      - PRODUCT_URL=http://product:3000
+      - INVENTORY_URL=http://inventory:3000
+      - ORDER_URL=http://order:3000
+      - PAYMENT_URL=http://payment:3000
     depends_on:
       - authentication
+      - product
+      - inventory
+      - order
+      - payment
     ports:
       - "3000:3000"
     command: "sh -c 'npm install; npm run start'"
@@ -39,5 +47,141 @@ services:
       - authentication-db
     command: "sh -c 'npm install; npm run start'"
 
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    environment:
+      - RABBITMQ_DEFAULT_USER=myuser
+      - RABBITMQ_DEFAULT_PASS=mypassword
+    ports:
+      # AMQP protocol port
+      #- "5672:5672"
+      # HTTP management UI
+      - "15672:15672"
+  bill-db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_USER: "root"
+      POSTGRES_DB: "bill"
+    volumes:
+      - bill-db-data:/var/lib/postgresql/data
+
+  bill:
+    image: node:alpine
+    volumes:
+      - ./bill:/app
+    working_dir: /app
+    depends_on:
+      - bill-db
+      - rabbitmq
+    environment:
+      - DATABASE_URL=postgres://root:password@bill-db:5432/bill
+      - PORT=3000
+      - NODE_ENV=dev
+      - AMQP_HOST=amqp://myuser:mypassword@rabbitmq
+    command: "sh -c 'npm install; npm run start'"
+
+  inventory-db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_USER: "root"
+      POSTGRES_DB: "inventory"
+    volumes:
+      - inventory-db-data:/var/lib/postgresql/data
+
+  inventory:
+    image: node:alpine
+    volumes:
+      - ./inventory:/app
+    depends_on:
+      - inventory-db
+    working_dir: /app
+    environment:
+      - DATABASE_URL=postgres://root:password@inventory-db:5432/inventory
+      - PORT=3000
+      - JWT_SECRET=s3cr3t
+      - NODE_ENV=dev
+    command: "sh -c 'npm install; npm run start'"
+
+  order-db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_USER: "root"
+      POSTGRES_DB: "order"
+    volumes:
+      - order-db-data:/var/lib/postgresql/data
+
+  order:
+    image: node:alpine
+    volumes:
+      - ./order:/app
+    working_dir: /app
+    depends_on:
+      - order-db
+      - rabbitmq
+    environment:
+      - DATABASE_URL=postgres://root:password@order-db:5432/order
+      - PORT=3000
+      - NODE_ENV=dev
+      - AMQP_HOST=amqp://myuser:mypassword@rabbitmq
+    command: "sh -c 'npm install; npm run start'"
+
+  payment-db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_USER: "root"
+      POSTGRES_DB: "payment"
+    volumes:
+      - payment-db-data:/var/lib/postgresql/data
+
+  payment:
+    depends_on:
+      - rabbitmq
+      - payment-db
+    image: node:alpine
+    volumes:
+      - ./payment:/app
+    working_dir: /app
+    environment:
+      - DATABASE_URL=postgres://root:password@payment-db:5432/payment
+      - PORT=3000
+      - JWT_SECRET=s3cr3t
+      - NODE_ENV=dev
+      - RABBITMQ_URL=amqp://myuser:mypassword@rabbitmq
+      - STRIPE_SECRET_KEY=sk_test_51Kv01KHOKpMQyAGvnIgMazg2zLaxcnu3QcwbZc719O3lrbBZ3jSRriAj104ReRI6xg2Hvwjs3jk5eZh0mx22sN1O00CEa6kx5W
+      - WEBHOOK_SECRET=whsec_f15ee1012c71f07a8dac75fbfe1b9861e7e53b279926a742bb3e1f821b87181b
+    command: "sh -c 'npm install; npm run start'"
+
+  product-db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_USER: "root"
+      POSTGRES_DB: "product"
+    volumes:
+      - product-db-data:/var/lib/postgresql/data
+
+  product:
+    image: node:alpine
+    volumes:
+      - ./product:/app
+    working_dir: /app
+    depends_on:
+      - product-db
+    environment:
+      - DATABASE_URL=postgres://root:password@product-db:5432/product
+      - PORT=3000
+      - JWT_SECRET=s3cr3t
+      - NODE_ENV=dev
+    command: "sh -c 'npm install; npm run start'"
+
 volumes:
   authentication-db-data: {}
+  bill-db-data: {}
+  inventory-db-data: {}
+  order-db-data: {}
+  payment-db-data: {}
+  product-db-data: {}

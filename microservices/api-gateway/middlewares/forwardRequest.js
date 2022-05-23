@@ -15,10 +15,21 @@ module.exports = function forwardRequest(url) {
     if (req.headers["authorization"]) {
       fetchOptions.headers["Authorization"] = req.headers["authorization"];
     }
+
+    // => {id: 1, orderId: 2} => [[id, 1], [orderId, 2]]
+    Object.entries(req.params).forEach(([key, value]) => {
+      url = url.replace(`:${key}`, value);
+    });
+
     const response = await fetch(url, fetchOptions);
-    console.log(url, response.status, response.body.length);
+    console.log(url, response.status);
     if ([200, 201, 400].includes(response.status))
       res.status(response.status).json(await response.json());
-    else res.sendStatus(response.status);
+    else {
+      if (response.status === 500) {
+        console.error(await response.text());
+      }
+      res.sendStatus(response.status);
+    }
   };
 };

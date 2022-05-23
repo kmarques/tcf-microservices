@@ -3,7 +3,7 @@ const Discovery = require("./utils/Discovery");
 const app = express();
 app.use(express.json());
 
-Discovery(app);
+Discovery.config(app);
 //app.use(require("./routes/security"));
 //app.use(require("./routes/user"));
 

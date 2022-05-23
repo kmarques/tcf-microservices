@@ -14,7 +14,6 @@ module.exports = {
     try {
       const inventory = await Inventory.create({
         ...req.body,
-        ProductId: req.params.id,
       });
       res.status(201).json(inventory);
     } catch (err) {
@@ -52,7 +51,7 @@ module.exports = {
     console.log("Get user collections");
     try {
       const users = await Inventory.findAll({
-        where: { ...req.query, ProductId: parseInt(req.params.id) },
+        where: { ...req.query },
       });
       res.json(users);
     } catch (err) {

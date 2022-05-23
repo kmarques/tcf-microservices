@@ -1,6 +1,6 @@
-const Sequelize = require("../lib/db");
+const { Sequelize } = require("./models");
 
 Sequelize.sync({ alter: true }).then(() => {
-	console.log("Database & tables created!");
-	Sequelize.close();
+  console.log("Database & tables created!");
+  Sequelize.close();
 });

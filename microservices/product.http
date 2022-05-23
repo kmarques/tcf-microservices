@@ -1,0 +1,60 @@
+@tokenUser=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJiYXdAdGVzdC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTY1MTQ5MzQwMSwiZXhwIjoxNjUxNTc5ODAxfQ.HMi_KUOp16DmThBUXvmIWpcNlE2O_aI4fvGBz74-Hrg
+@tokenAdmin=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsImlhdCI6MTY1MzMxMDQ4OCwiZXhwIjoxNjUzMzk2ODg4fQ.vMjJTpGXHQdTZKsjUGXsY72XeUvxNnNqWhHJAs3RWAs
+
+### GET all products
+GET http://localhost:3000/products
+// use token variable
+Authorization: Bearer {{tokenAdmin}}
+
+### GET all products without token
+GET http://localhost:3000/products
+
+### GET a product
+GET http://localhost:3000/products/1
+// use token variable
+Authorization: Bearer {{tokenAdmin}}
+
+### GET a product
+GET http://localhost:3000/products/1
+
+### Create a user with a POST request using lastname, firstname, email, password
+POST http://localhost:3000/products
+Content-Type: application/json
+
+{
+  "name": "test",
+  "authors": [1],
+  "EditorId": 1,
+  "price": 999,
+  "description": "A",
+  "CategoryId": 1,
+  "imageUrl": "test"
+}
+
+### Create a user with a POST request using lastname, firstname, email, password
+POST http://localhost:3000/products
+Content-Type: application/json
+Authorization: Bearer {{tokenAdmin}}
+
+{
+  "name": "test",
+  "authors": [1],
+  "EditorId": 1,
+  "price": 999,
+  "description": "A",
+  "CategoryId": 1,
+  "imageUrl": "test"
+}
+
+### Update a user with a PUT request using lastname, firstname, email, password
+PUT http://localhost:3000/products/12
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "name": "test 2"
+}
+
+### Delete a user with a DELETE request
+DELETE http://localhost:3000/products/13
+Authorization: Bearer {{tokenAdmin}}

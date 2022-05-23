@@ -30,10 +30,12 @@ module.exports = {
       await t.commit();
       res.status(201).json(product);
     } catch (err) {
-      console.error(err);
+      console.error(err, typeof err);
       await t.rollback();
       if (err instanceof Sequelize.ValidationError) {
         res.status(400).json(format(err));
+      } else if (err instanceof Sequelize.ForeignKeyConstraintError) {
+        res.status(400).json({ [err.index]: err.original.detail });
       } else {
         res.status(500).json({ message: err.message });
       }
@@ -43,7 +45,11 @@ module.exports = {
   get: async (req, res) => {
     try {
       const product = await Product.findByPk(req.params.id);
-      res.json(product);
+      if (!product) {
+        res.sendStatus(404);
+      } else {
+        res.json(product);
+      }
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
@@ -52,11 +58,16 @@ module.exports = {
   put: async (req, res) => {
     try {
       const product = await Product.findByPk(req.params.id);
+      if (!product) {
+        return res.sendStatus(404);
+      }
       await product.update(req.body);
       res.json(product);
     } catch (err) {
       if (err instanceof Sequelize.ValidationError) {
         res.status(400).json(format(err));
+      } else if (err instanceof Sequelize.ForeignKeyConstraintError) {
+        res.status(400).json({ [err.index]: err.original.detail });
       } else {
         res.status(500).json({ message: err.message });
       }
@@ -66,6 +77,9 @@ module.exports = {
   delete: async (req, res) => {
     try {
       const product = await Product.findByPk(req.params.id);
+      if (!product) {
+        return res.sendStatus(404);
+      }
       await product.destroy();
       res.status(204).end();
     } catch (err) {

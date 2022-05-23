@@ -1,5 +1,5 @@
 @tokenUser=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJiYXdAdGVzdC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTY1MTQ5MzQwMSwiZXhwIjoxNjUxNTc5ODAxfQ.HMi_KUOp16DmThBUXvmIWpcNlE2O_aI4fvGBz74-Hrg
-@tokenAdmin=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoiYWRtaW5AdGVzdC5jb20iLCJpYXQiOjE2NTI4MDEyMTAsImV4cCI6MTY1Mjg4NzYxMH0.F9oVroICJOjSa6YmP2Znbji7PRSC2nBx0Y1pTHawCEs
+@tokenAdmin=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsImlhdCI6MTY1MzMxMDQ4OCwiZXhwIjoxNjUzMzk2ODg4fQ.vMjJTpGXHQdTZKsjUGXsY72XeUvxNnNqWhHJAs3RWAs
 
 ### Login
 POST http://localhost:3000/login
@@ -58,5 +58,5 @@ Content-Type: application/json
 }
 
 ### Delete a user with a DELETE request
-DELETE http://localhost:3000/users/3
+DELETE http://localhost:3000/users/2
 Authorization: Bearer {{tokenAdmin}}

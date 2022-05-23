@@ -1,0 +1,39 @@
+@tokenUser=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJiYXdAdGVzdC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTY1MTQ5MzQwMSwiZXhwIjoxNjUxNTc5ODAxfQ.HMi_KUOp16DmThBUXvmIWpcNlE2O_aI4fvGBz74-Hrg
+@tokenAdmin=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsImlhdCI6MTY1MzMxMDQ4OCwiZXhwIjoxNjUzMzk2ODg4fQ.vMjJTpGXHQdTZKsjUGXsY72XeUvxNnNqWhHJAs3RWAs
+
+# ---- AUTHORS ----
+
+### Get authors
+GET http://localhost:3000/categories
+
+### GET all authors
+GET http://localhost:3000/categories/
+Authorization: Bearer {{tokenAdmin}}
+
+### Post authors
+POST http://localhost:3000/categories/
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "name": "Categorie"
+}
+### Post authors
+POST http://localhost:3000/categories/
+Content-Type: application/json
+
+{
+  "name": "Categorie"
+}
+### Post authors
+PUT http://localhost:3000/categories/1
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "name": "Categorie2"
+}
+
+### Delete a product with a DELETE request
+DELETE http://localhost:3000/categories/2
+Authorization: Bearer {{tokenAdmin}}

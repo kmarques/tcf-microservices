@@ -6,6 +6,7 @@ Order.hasMany(OrderProduct);
 OrderProduct.belongsTo(Order);
 
 module.exports = {
-	Order,
-	OrderProduct
+  Order,
+  OrderProduct,
+  Sequelize,
 };

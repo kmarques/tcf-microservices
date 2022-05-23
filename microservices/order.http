@@ -1,0 +1,29 @@
+@tokenUser=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJiYXdAdGVzdC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTY1MTQ5MzQwMSwiZXhwIjoxNjUxNTc5ODAxfQ.HMi_KUOp16DmThBUXvmIWpcNlE2O_aI4fvGBz74-Hrg
+@tokenAdmin=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsImlhdCI6MTY1MzMxMDQ4OCwiZXhwIjoxNjUzMzk2ODg4fQ.vMjJTpGXHQdTZKsjUGXsY72XeUvxNnNqWhHJAs3RWAs
+### Get editors
+GET http://localhost:3000/orders
+
+### GET all editors
+GET http://localhost:3000/orders/
+Authorization: Bearer {{tokenAdmin}}
+
+
+### Get editors
+GET http://localhost:3000/orders/9
+
+### GET all editors
+GET http://localhost:3000/orders/9
+Authorization: Bearer {{tokenAdmin}}
+
+### Post editors
+POST http://localhost:3000/orders/
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "shippingAddress": "3 rue de Paris, 75000 Paris",
+  "cart": [
+    {"product": 12, "quantity": 2},
+    {"product": 12, "quantity": 5}
+  ]
+}

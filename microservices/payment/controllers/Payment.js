@@ -2,14 +2,16 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const { Payment, Notification } = require("../models");
 const format = require("../lib/error").formatError;
 const Sequelize = require("sequelize");
-const amqp = require('../lib/amqp')
+const amqp = require("../lib/amqp");
 
 const setPaymentStatus = async (event, status) => {
+  console.log(event.data.object.payment_intent);
   const payment = await Payment.findOne({
     where: {
       paymentIntentId: event.data.object.payment_intent,
     },
   });
+  console.log(payment, await Payment.findAll());
   payment.status = status;
   await payment.save();
   return payment;
@@ -17,7 +19,10 @@ const setPaymentStatus = async (event, status) => {
 
 module.exports = {
   createPaymentIntent: async (req, res) => {
-    const { orderId, total } = req.body;
+    const {
+      order: { id: orderId, total },
+    } = req.body;
+    console.log(req.body);
 
     try {
       const payment = await Payment.create({
@@ -36,7 +41,7 @@ module.exports = {
         },
       });
 
-      payment.paymentIntentId = paymentIntent.id;
+      payment.paymentIntentId = paymentIntent.client_secret;
       await payment.save();
 
       res.send({
@@ -56,16 +61,16 @@ module.exports = {
     let event;
     const sig = req.headers["stripe-signature"];
 
-    if(process.env.NODE_ENV === "dev") {
-      event = req.body
-    } else if(process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV === "dev") {
+      event = req.body;
+    } else if (process.env.NODE_ENV === "production") {
       try {
         event = stripe.webhooks.constructEvent(
           req.rawBody,
           sig,
           process.env.WEBHOOK_SECRET
         );
-  
+
         const notification = await Notification.create({ body: event });
         await notification.save();
       } catch (err) {
@@ -74,36 +79,45 @@ module.exports = {
         return;
       }
     }
+    try {
+      switch (event.type) {
+        case "payment_intent.succeeded":
+          await setPaymentStatus(event, "PROCESSING");
+          break;
+        case "charge.succeeded":
+          console.log("charge succeeded");
+          await setPaymentStatus(event, "SUCCEEDED");
+          const channel = await amqp();
+          const queue = "update-order";
 
-    switch (event.type) {
-      case "payment_intent.succeeded":
-        await setPaymentStatus(event, "PROCESSING");
-        break;
-      case "charge.succeeded":
-        await setPaymentStatus(event, "SUCCEEDED");
-        const channel = await amqp()
-        const queue = 'update-order';
+          //await channel.assertQueue(queue, {
+          //  durable: true,
+          //});
 
-        await channel.assertQueue(queue, {
-        durable: true
-        });
+          const message = Buffer.from(
+            JSON.stringify({
+              order_id: event.data.object.metadata.order_id,
+              status: "PAID",
+            })
+          );
 
-        const message = Buffer.from(JSON.stringify({
-          order_id: event.data.object.metadata.order_id,
-          status: 'PAID'
-        }));
+          await channel.sendToQueue(queue, message);
+          console.log("Message sent", queue, message);
 
-        await channel.sendToQueue(queue, message)
-        break;
-      case "payment_intent.canceled":
-        await setPaymentStatus(event, "FAILED");
-        break;
-      case "payment_intent.payment_failed":
-        await setPaymentStatus(event, "FAILED");
-        break;
-      default:
-        console.log(`Unhandled event type ${event.type}`);
+          break;
+        case "payment_intent.canceled":
+          await setPaymentStatus(event, "FAILED");
+          break;
+        case "payment_intent.payment_failed":
+          await setPaymentStatus(event, "FAILED");
+          break;
+        default:
+          console.log(`Unhandled event type ${event.type}`);
+      }
+      res.json({ received: true });
+    } catch (err) {
+      console.error(err);
+      res.status(500);
     }
-    res.json({ received: true });
   },
 };

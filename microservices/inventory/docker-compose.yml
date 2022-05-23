@@ -1,7 +1,7 @@
 version: '3.6'
 
 services:
-  db:
+  inventory-db:
     image: postgres:alpine
     ports:
       - "5432:5432"
@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: "root"
       POSTGRES_DB: "inventory"
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - inventory-db-data:/var/lib/postgresql/data
 
   inventory:
     image: node:alpine
@@ -24,7 +24,7 @@ services:
       - NODE_ENV=dev
     ports:
       - "4000:3000"
-    command: "sh -c 'npm install; DEBUG=express:* npm run start'"
+    command: "sh -c 'npm install; npm run start'"
 
 volumes:
   db-data: {}

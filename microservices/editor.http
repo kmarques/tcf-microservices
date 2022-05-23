@@ -1,0 +1,64 @@
+@tokenUser=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJiYXdAdGVzdC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTY1MTQ5MzQwMSwiZXhwIjoxNjUxNTc5ODAxfQ.HMi_KUOp16DmThBUXvmIWpcNlE2O_aI4fvGBz74-Hrg
+@tokenAdmin=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkB0ZXN0LmNvbSIsImlhdCI6MTY1MzMxMDQ4OCwiZXhwIjoxNjUzMzk2ODg4fQ.vMjJTpGXHQdTZKsjUGXsY72XeUvxNnNqWhHJAs3RWAs
+### Get editors
+GET http://localhost:3000/editors
+
+### GET all editors
+GET http://localhost:3000/editors/
+Authorization: Bearer {{tokenAdmin}}
+### Get editors
+GET http://localhost:3000/editors/1
+
+### GET all editors
+GET http://localhost:3000/editors/1
+Authorization: Bearer {{tokenAdmin}}
+
+### Post editors
+POST http://localhost:3000/editors/
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "name": "Bayard"
+
+}
+### Post editors
+PUT http://localhost:3000/editors/1
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "name": "Bayard 2"
+
+}
+
+### Delete a product with a DELETE request
+DELETE http://localhost:3000/editors/2
+Authorization: Bearer {{tokenAdmin}}
+
+
+
+# ---- AUTHORS ----
+
+### Get authors
+GET http://localhost:3000/authors
+
+### GET all authors
+GET http://localhost:3000/authors/
+# Authorization: Bearer {{tokenAdmin}}
+
+### Post authors
+POST http://localhost:3000/authors/
+# Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+  "name": "Arthur", 
+  "biography": "lorem ipsum",
+  "imageUrl": "url"
+
+}
+
+### Delete a product with a DELETE request
+DELETE http://localhost:3000/authors/4
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY1MTQ4MDYyMiwiZXhwIjoxNjUxNTY3MDIyfQ.nQa2qLMPLhYQQpEFsfRHND_CzgFPaZBhST4JiPe7AKQ

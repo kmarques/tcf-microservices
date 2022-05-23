@@ -11,20 +11,10 @@
     {
       "method": "POST",
       "path": "/",
-      "middlewares": ["verifyToken"]
+      "middlewares": ["verifyToken", "translateResource"]
     },
     {
       "method": "GET",
-      "path": "/:id",
-      "middlewares": ["verifyToken"]
-    },
-    {
-      "method": "PUT",
-      "path": "/:id",
-      "middlewares": ["verifyToken"]
-    },
-    {
-      "method": "DELETE",
       "path": "/:id",
       "middlewares": ["verifyToken"]
     }

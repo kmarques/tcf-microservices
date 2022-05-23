@@ -1,10 +1,13 @@
 {
   "baseUrl": "/products",
   "endpoint": "PRODUCT_URL",
+  "middlewares": ["verifyToken"],
+  "keepBaseUrl": true,
   "routes": [
     {
       "method": "GET",
-      "path": "/"
+      "path": "/",
+      "middlewares": []
     },
     {
       "method": "POST",
@@ -12,7 +15,8 @@
     },
     {
       "method": "GET",
-      "path": "/:id"
+      "path": "/:id",
+      "middlewares": []
     },
     {
       "method": "PUT",
@@ -22,5 +26,8 @@
       "method": "DELETE",
       "path": "/:id"
     }
-  ]
+  ],
+  "translations": {
+    "product": "/products/:id"
+  }
 }
