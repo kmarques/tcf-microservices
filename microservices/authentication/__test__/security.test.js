@@ -59,8 +59,6 @@ describe("Security", () => {
       password: "testing",
     };
     const givenConnection = await client.post("/login").send(givenUser);
-    console.log(givenConnection.body);
-    console.log("GivenConnection", givenConnection.body);
     // When
     const response = await client
       .post("/verify-token")
