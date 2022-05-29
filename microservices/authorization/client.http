@@ -4,11 +4,11 @@
 ### Create an iam 
 POST http://localhost:3000/iam
 Content-Type: application/json
-X-User-Id: 2
+X-User-Id: 3
 
 {
   "resourceType" : "baw",
-  "resourceId" : 2,
+  "resourceId" : 7,
   "acl": 2
 }
 
@@ -66,5 +66,5 @@ X-User-Role: admin
 
 {
   "method": "POST",
-  "originUrl": "/baw/1"
+  "originUrl": "/baw/5"
 }

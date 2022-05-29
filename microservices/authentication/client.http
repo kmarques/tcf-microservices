@@ -1,12 +1,12 @@
-@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNjUyNzA4NDA1LCJleHAiOjE2NTI3OTQ4MDV9.Y0Ykna6iE2-BVFXKKUiLz0XrL58svOtVpXxGAYzAHI4
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJiaUBiaS5jb20iLCJpYXQiOjE2NTMzMTE0MTcsImV4cCI6MTY1MzM5NzgxN30.KB-y7FqSTcqALe61HH1YwXLe3y1UsxJUdwzSgd8dc_4
 
 ### Login
 POST http://localhost:3000/login
 Content-Type: application/json
 
 {
-  "email": "test@test.com",
-  "password": "test"
+  "email": "bi@bi.com",
+  "password": "bi"
 }
 
 ### Register
@@ -14,10 +14,10 @@ POST http://localhost:3000/register
 Content-Type: application/json
 
 {
-  "lastname": "test",
-  "firstname": "test",
-  "email": "test@test.com",
-  "password": "test"
+  "lastname": "gui",
+  "firstname": "gui",
+  "email": "gui@gui.com",
+  "password": "gui"
 }
 
 ### Verify Bearer token
@@ -45,7 +45,7 @@ GET http://localhost:3000/users/1
 Authorization: Bearer {{token}}
 
 ### Update a user with a PUT request using lastname, firstname, email, password
-PUT http://localhost:3000/users/1
+PUT http://localhost:3000/users/4
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -55,5 +55,5 @@ Content-Type: application/json
 }
 
 ### Delete a user with a DELETE request
-DELETE http://localhost:3000/users/1
+DELETE http://localhost:3000/users/2
 Authorization: Bearer {{token}}

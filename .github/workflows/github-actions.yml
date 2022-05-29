@@ -1,0 +1,30 @@
+name: Authentication Service
+on: [push]
+jobs:
+  check-changed-services:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+        with: 
+          fetch-depth: 0
+      - name: Build docker-compose
+        working-directory: ./microservices/authentication
+        run: docker-compose up -d
+      - name: Clean modules
+        run: |
+          docker exec authentication_authentication_1 rm -rf node_modules package-lock.json
+      - name: Install Dependencies
+        run: |
+          docker exec authentication_authentication_1 npm install
+      - name: Create database & tables
+        run: |
+          docker exec authentication_authentication_1 node migrate.js
+      - name: Run tests if git diff
+        run: |
+          CHANGED=$(git diff --quiet HEAD master -- microservices | echo changed)
+          if [[ $CHANGED ]]; then
+              docker exec authentication_authentication_1 npm test --maxWorkers=2
+          else
+              echo 'No changes with master'
+          fi
