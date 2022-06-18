@@ -2,7 +2,7 @@ name: Payment Service
 on: [push]
 
 env:
-  STRIPE_SECRET_KEY: ${{env.STRIPE_SECRET_KEY}}
+  STRIPE_SECRET_KEY: ${{secrets.STRIPE_SECRET_KEY}}
 
 jobs:
   check-changed-services:
