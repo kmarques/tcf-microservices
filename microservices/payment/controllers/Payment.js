@@ -44,7 +44,7 @@ module.exports = {
       payment.paymentIntentId = paymentIntent.client_secret;
       await payment.save();
 
-      res.send({
+      res.status(201).send({
         clientSecret: paymentIntent.client_secret,
         totalPrice: paymentIntent.amount,
       });
@@ -53,7 +53,7 @@ module.exports = {
         res.status(400).json(format(err));
       } else {
         console.error(err);
-        res.sendStatus(500);
+        res.status(500);
       }
     }
   },
@@ -90,34 +90,36 @@ module.exports = {
           const channel = await amqp();
           const queue = "update-order";
 
-          //await channel.assertQueue(queue, {
-          //  durable: true,
-          //});
+    switch (event.type) {
+      case "payment_intent.succeeded":
+        await setPaymentStatus(event, "PROCESSING");
+        break;
+      case "charge.succeeded":
+        await setPaymentStatus(event, "SUCCEEDED");
+        const channel = await amqp();
+        const queue = "update-order";
 
-          const message = Buffer.from(
-            JSON.stringify({
-              order_id: event.data.object.metadata.order_id,
-              status: "PAID",
-            })
-          );
+        await channel.assertQueue(queue, {
+          durable: true,
+        });
 
-          await channel.sendToQueue(queue, message);
-          console.log("Message sent", queue, message);
+        const message = Buffer.from(
+          JSON.stringify({
+            order_id: event.data.object.metadata.order_id,
+            status: "PAID",
+          })
+        );
 
-          break;
-        case "payment_intent.canceled":
-          await setPaymentStatus(event, "FAILED");
-          break;
-        case "payment_intent.payment_failed":
-          await setPaymentStatus(event, "FAILED");
-          break;
-        default:
-          console.log(`Unhandled event type ${event.type}`);
-      }
-      res.json({ received: true });
-    } catch (err) {
-      console.error(err);
-      res.status(500);
+        await channel.sendToQueue(queue, message);
+        break;
+      case "payment_intent.canceled":
+        await setPaymentStatus(event, "FAILED");
+        break;
+      case "payment_intent.payment_failed":
+        await setPaymentStatus(event, "FAILED");
+        break;
+      default:
+        console.log(`Unhandled event type ${event.type}`);
     }
   },
 };
