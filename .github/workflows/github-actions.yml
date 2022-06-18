@@ -14,7 +14,7 @@ jobs:
         run: |
           docker-compose up -d
         env:
-          STRIPE_SECRET_KEY: ${{secrets.STRIPE_SECRET_KEY}}
+          STRIPE_SECRET_KEY: '${{secrets.STRIPE_SECRET_KEY}}'
       - name: Clean modules
         run: |
           docker exec payment_payment_1 rm -rf node_modules package-lock.json
