@@ -33,7 +33,6 @@ services:
       - DATABASE_URL=postgres://root:password@db:5432/payment
       - PORT=3000
       - JWT_SECRET=s3cr3t
-      - NODE_ENV=dev
       - RABBITMQ_URL=amqp://user:password@rabbitmq
       - STRIPE_SECRET_KEY
     ports:
