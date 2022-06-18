@@ -11,7 +11,10 @@ jobs:
           fetch-depth: 0
       - name: Build docker-compose
         working-directory: ./microservices/payment
-        run: docker-compose up -d
+      - run: |
+          docker-compose up -d
+        env:
+          STRIPE_SECRET_KEY: ${{secrets.STRIPE_SECRET_KEY}}
       - name: Clean modules
         run: |
           docker exec payment_payment_1 rm -rf node_modules package-lock.json
@@ -24,8 +27,6 @@ jobs:
       - name: Run tests if git diff
         run: |
           CHANGED=$(git diff --quiet HEAD master -- microservices | echo changed)
-          env:
-            STRIPE_SECRET_KEY: ${{secrets.STRIPE_SECRET_KEY}}
           if [[ $CHANGED ]]; then
               docker exec payment_payment_1 npm test --maxWorkers=2
           else
