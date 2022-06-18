@@ -19,10 +19,7 @@ const setPaymentStatus = async (event, status) => {
 
 module.exports = {
   createPaymentIntent: async (req, res) => {
-    const {
-      order: { id: orderId, total },
-    } = req.body;
-    console.log(req.body);
+    const { orderId, total } = req.body;
 
     try {
       const payment = await Payment.create({
@@ -44,7 +41,7 @@ module.exports = {
       payment.paymentIntentId = paymentIntent.client_secret;
       await payment.save();
 
-      res.send({
+      res.status(201).send({
         clientSecret: paymentIntent.client_secret,
         totalPrice: paymentIntent.amount,
       });
@@ -53,17 +50,18 @@ module.exports = {
         res.status(400).json(format(err));
       } else {
         console.error(err);
-        res.sendStatus(500);
+        res.status(500);
       }
     }
   },
   handleEvent: async (req, res) => {
     let event;
-    const sig = req.headers["stripe-signature"];
 
-    if (process.env.NODE_ENV === "dev") {
+    if (process.env.NODE_ENV === "dev" || process.env.NODE_ENV === "test") {
       event = req.body;
     } else if (process.env.NODE_ENV === "production") {
+      const sig = req.headers["stripe-signature"];
+
       try {
         event = stripe.webhooks.constructEvent(
           req.rawBody,
@@ -79,20 +77,20 @@ module.exports = {
         return;
       }
     }
+
     try {
       switch (event.type) {
         case "payment_intent.succeeded":
           await setPaymentStatus(event, "PROCESSING");
           break;
         case "charge.succeeded":
-          console.log("charge succeeded");
           await setPaymentStatus(event, "SUCCEEDED");
           const channel = await amqp();
           const queue = "update-order";
 
-          //await channel.assertQueue(queue, {
-          //  durable: true,
-          //});
+          await channel.assertQueue(queue, {
+            durable: true,
+          });
 
           const message = Buffer.from(
             JSON.stringify({
@@ -102,8 +100,6 @@ module.exports = {
           );
 
           await channel.sendToQueue(queue, message);
-          console.log("Message sent", queue, message);
-
           break;
         case "payment_intent.canceled":
           await setPaymentStatus(event, "FAILED");
@@ -114,6 +110,7 @@ module.exports = {
         default:
           console.log(`Unhandled event type ${event.type}`);
       }
+
       res.json({ received: true });
     } catch (err) {
       console.error(err);
