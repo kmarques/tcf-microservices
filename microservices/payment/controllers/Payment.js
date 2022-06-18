@@ -56,11 +56,12 @@ module.exports = {
   },
   handleEvent: async (req, res) => {
     let event;
-    const sig = req.headers["stripe-signature"];
 
     if (process.env.NODE_ENV === "dev" || process.env.NODE_ENV === "test") {
       event = req.body;
     } else if (process.env.NODE_ENV === "production") {
+      const sig = req.headers["stripe-signature"];
+
       try {
         event = stripe.webhooks.constructEvent(
           req.rawBody,
@@ -76,49 +77,40 @@ module.exports = {
         return;
       }
     }
+
     try {
       switch (event.type) {
         case "payment_intent.succeeded":
           await setPaymentStatus(event, "PROCESSING");
           break;
         case "charge.succeeded":
-          console.log("charge succeeded");
           await setPaymentStatus(event, "SUCCEEDED");
           const channel = await amqp();
           const queue = "update-order";
 
-          switch (event.type) {
-            case "payment_intent.succeeded":
-              await setPaymentStatus(event, "PROCESSING");
-              break;
-            case "charge.succeeded":
-              await setPaymentStatus(event, "SUCCEEDED");
-              const channel = await amqp();
-              const queue = "update-order";
+          await channel.assertQueue(queue, {
+            durable: true,
+          });
 
-              await channel.assertQueue(queue, {
-                durable: true,
-              });
+          const message = Buffer.from(
+            JSON.stringify({
+              order_id: event.data.object.metadata.order_id,
+              status: "PAID",
+            })
+          );
 
-              const message = Buffer.from(
-                JSON.stringify({
-                  order_id: event.data.object.metadata.order_id,
-                  status: "PAID",
-                })
-              );
-
-              await channel.sendToQueue(queue, message);
-              break;
-            case "payment_intent.canceled":
-              await setPaymentStatus(event, "FAILED");
-              break;
-            case "payment_intent.payment_failed":
-              await setPaymentStatus(event, "FAILED");
-              break;
-            default:
-              console.log(`Unhandled event type ${event.type}`);
-          }
+          await channel.sendToQueue(queue, message);
+          break;
+        case "payment_intent.canceled":
+          await setPaymentStatus(event, "FAILED");
+          break;
+        case "payment_intent.payment_failed":
+          await setPaymentStatus(event, "FAILED");
+          break;
+        default:
+          console.log(`Unhandled event type ${event.type}`);
       }
+
       res.json({ received: true });
     } catch (err) {
       console.error(err);
