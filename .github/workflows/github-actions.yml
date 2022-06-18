@@ -1,5 +1,9 @@
 name: Payment Service
 on: [push]
+
+env:
+  STRIPE_SECRET_KEY: ${{env.STRIPE_SECRET_KEY}}
+
 jobs:
   check-changed-services:
     runs-on: ubuntu-latest
